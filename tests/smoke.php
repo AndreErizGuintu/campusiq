@@ -99,8 +99,42 @@ foreach ([
     '/storage/logs/' => [403],
     '/design-ref/01_1_Index_landing_page.html' => [403],
     '/assets/css/app.css' => [200],
+    '/assets/js/app.js' => [200],
+    '/login' => [200],
+    '/signup' => [200],
+    '/does-not-exist' => [404],
 ] as $path => $expected) {
     check("GET {$path}", fetch($base . $path), $expected);
+}
+
+// Every protected page sends guests to /login
+echo "\nGuests are redirected\n";
+$staffPages = ['/dashboard'];
+$portalPages = ['/my/records'];
+foreach ([...$staffPages, ...$portalPages] as $path) {
+    $response = fetch($base . $path);
+    check("GET {$path} as guest", $response, [302]);
+}
+check('POST /login without CSRF', fetch("{$base}/login", 'guest', 'POST', ['login' => 'T-0012', 'password' => 'password123']), [403]);
+
+echo "\nStaff (T-0012)\n";
+loginAs('staff', 'T-0012');
+foreach ($staffPages as $path) {
+    check("GET {$path}", fetch($base . $path, 'staff'), [200]);
+}
+foreach ($portalPages as $path) {
+    check("GET {$path} (portal only)", fetch($base . $path, 'staff'), [403]);
+}
+
+foreach (['student' => '10-24031', 'parent' => 'P-10-24031'] as $session => $login) {
+    echo "\n" . ucfirst($session) . " ({$login})\n";
+    loginAs($session, $login);
+    foreach ($portalPages as $path) {
+        check("GET {$path}", fetch($base . $path, $session), [200]);
+    }
+    foreach ($staffPages as $path) {
+        check("GET {$path} (staff only)", fetch($base . $path, $session), [403]);
+    }
 }
 
 echo "\n{$checks} checks, {$failures} failed\n";

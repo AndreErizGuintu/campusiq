@@ -29,3 +29,10 @@ Drops and recreates `campusiq`, imports `database/schema.sql`, clears `storage/r
 - The project folder is `C:\xampp\htdocs\CampusIQ_Figma_Import`. A directory junction `C:\xampp\htdocs\campusiq` points at it, so the site runs at http://localhost/campusiq as CLAUDE.md expects without moving the folder.
 - The 15 design screens were moved into `design-ref/`; `PROMPT.md` and `MCP_SETUP.md` were moved into `docs/`.
 - Playwright MCP and MySQL MCP were not loaded in the build session, so `.mcp.json` registers both for future sessions. During the build the same checks ran with Playwright (Edge) from a scratch Node script and with `mysql.exe`.
+- Login accepts the ID number or the email. Parent accounts get the ID `P-<student number>` (e.g. `P-10-24031`); student accounts use the student number.
+- Sign up links an account by student number + the email the school has on file (student email for students, guardian email for parents). One student account and one parent account per student.
+- The "Forgot password?" link from the design was left out: password reset is outside the scope lock. "Remember me" keeps the session cookie for 7 days.
+- Demo shortcut buttons on the login page ("Enter as staff / student / parent") only show when `APP_ENV=local`.
+- A failed CSRF check returns 403 "Your session expired" (Apache rewrites the non-standard 419 code to 500).
+- Five failed logins in a row lock the login form for 60 seconds (per session).
+- Mobile bottom tab bar for staff: Dashboard, Students, AI, Email, PDF (Students replaces Home, which stays reachable from the logo). Portal tabs: Records, Reports, Inbox.
