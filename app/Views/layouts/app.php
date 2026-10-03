@@ -29,6 +29,9 @@
     <?= partial('flash') ?>
     <?= partial('config', ['user' => $user, 'pendingEmail' => $pendingEmail ?? null]) ?>
     <script src="<?= e(asset('js/app.js')) ?>" defer></script>
+    <?php if (in_array('email.js', $scripts ?? [], true) && !App\Services\EmailTemplateService::isDemo()): ?>
+        <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" defer></script>
+    <?php endif; ?>
     <?php foreach ($scripts ?? [] as $script): ?>
         <script src="<?= e(asset('js/' . $script)) ?>" defer></script>
     <?php endforeach; ?>

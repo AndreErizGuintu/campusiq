@@ -163,6 +163,17 @@
       });
       recordForm.dispatchEvent(new CustomEvent('record-form:change'));
     };
+    // Show the "Saving emails ... automatically" note only when this type/value fires a trigger.
+    const autoNote = recordForm.querySelector('[data-auto-email]');
+    if (autoNote) {
+      const fires = JSON.parse(autoNote.dataset.autoEmail);
+      recordForm.addEventListener('record-form:change', () => {
+        const type = typeSelect.value;
+        const value = type === 'attendance' ? recordForm.querySelector('[name="value_attendance"]').value
+          : type === 'library' ? recordForm.querySelector('[name="value_library"]').value : '';
+        autoNote.hidden = !(type === 'grade' ? fires.grade : fires[`${type}:${value}`]);
+      });
+    }
     typeSelect.addEventListener('change', applyType);
     recordForm.addEventListener('change', (event) => {
       if (event.target !== typeSelect) recordForm.dispatchEvent(new CustomEvent('record-form:change'));

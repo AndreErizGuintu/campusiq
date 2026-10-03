@@ -109,11 +109,11 @@ foreach ([
 
 // Every protected page sends guests to /login
 echo "\nGuests are redirected\n";
-$staffPages = ['/dashboard', '/students', '/students?q=juan', '/students/1', '/students/1?type=grade', '/ai', '/ai?student=1'];
+$staffPages = ['/dashboard', '/students', '/students?q=juan', '/students/1', '/students/1?type=grade', '/ai', '/ai?student=1', '/emails', '/emails?student=2&template=absence_logged', '/api/email/compose?student_id=1&template=grade_posted'];
 $portalPages = ['/my/records'];
 foreach ([...$staffPages, ...$portalPages] as $path) {
-    $response = fetch($base . $path);
-    check("GET {$path} as guest", $response, [302]);
+    // Pages redirect to /login; JSON endpoints answer 401.
+    check("GET {$path} as guest", fetch($base . $path), str_starts_with($path, '/api/') ? [401] : [302]);
 }
 check('POST /login without CSRF', fetch("{$base}/login", 'guest', 'POST', ['login' => 'T-0012', 'password' => 'password123']), [403]);
 

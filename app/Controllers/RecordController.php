@@ -6,12 +6,13 @@ use App\Core\Auth;
 use App\Core\Request;
 use App\Core\Response;
 use App\Models\Record;
+use App\Services\EmailTemplateService;
 
 class RecordController extends Controller
 {
     public function store(Request $request, int $studentId): Response
     {
-        $this->studentOr404($studentId);
+        $student = $this->studentOr404($studentId);
         [$data, $errors] = $this->validate($request);
         if ($errors) {
             return $this->back("/students/{$studentId}", $errors, $request->only(self::FIELDS));
@@ -20,6 +21,12 @@ class RecordController extends Controller
         $id = Record::create($data + ['student_id' => $studentId, 'recorded_by' => Auth::id()]);
         $_SESSION['_highlight_record'] = $id;
         flash('success', 'Record saved');
+
+        // If this record's trigger is on, the next page load sends the email through EmailJS.
+        $pending = EmailTemplateService::autoPayload(Record::findDetailed($id), $student, Auth::user()['name'] ?? null);
+        if ($pending) {
+            $_SESSION['_pending_email'] = $pending;
+        }
 
         return $this->redirect("/students/{$studentId}");
     }

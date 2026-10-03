@@ -4,7 +4,6 @@
  * without JS every field shows and the server uses the ones for the chosen type.
  * @var array $student
  * @var array|null $editing record being edited
- * @var string|null $triggerNote html-safe hint about the automatic email (Phase 5)
  */
 $editing ??= null;
 $val = static fn (string $key, string $fromRecord = '') => old($key, $fromRecord);
@@ -94,8 +93,23 @@ $show = static fn (string ...$types): string => in_array($type, $types, true) ? 
         <?= $fieldError('note') ?>
     </div>
 
-    <?php if (!empty($triggerNote)): ?>
-        <?= $triggerNote ?>
+    <?php if (!$editing):
+        // Which type/value combinations fire an automatic email right now (Email Alerts page toggles).
+        $on = \App\Services\EmailTemplateService::triggerStates();
+        $fires = [
+            'grade' => $on['grade_posted'],
+            'attendance:Absent' => $on['absence_logged'],
+            'attendance:Late' => $on['late_arrival'],
+            'library:Overdue' => $on['book_overdue'],
+        ];
+        $demo = \App\Services\EmailTemplateService::isDemo();
+    ?>
+        <div class="flex items-start gap-2.5 rounded-lg bg-mail/[.07] px-3 py-2.5" data-auto-email='<?= e(json_encode($fires)) ?>' hidden>
+            <span class="mt-px text-mail"><?= icon('bolt', 'size-4') ?></span>
+            <p class="text-xs leading-normal text-mail-dark">
+                Saving emails <?= e($student['first_name']) ?> and <?= e($student['first_name']) ?>'s guardian automatically<?= $demo ? ' (demo mode: logged, not sent)' : '' ?>.
+            </p>
+        </div>
     <?php endif; ?>
 
     <button type="submit" class="btn btn-primary h-[42px] w-full"><?= $editing ? 'Save changes' : 'Save record' ?></button>

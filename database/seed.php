@@ -18,6 +18,7 @@ require dirname(__DIR__) . '/app/bootstrap.php';
 
 use App\Core\Database;
 use App\Core\Env;
+use App\Services\EmailTemplateService;
 
 mt_srand(2026);
 $pdo = Database::pdo();
@@ -194,6 +195,40 @@ foreach ($library as [$slug, $title, $value, $dayIndex, $dueIn]) {
 $insertSetting = $pdo->prepare('INSERT INTO settings (`key`, value) VALUES (?, ?)');
 foreach (['trigger_grade_posted', 'trigger_absence_logged', 'trigger_late_arrival', 'trigger_book_overdue'] as $key) {
     $insertSetting->execute([$key, '1']);
+}
+
+// ---------------------------------------------------------------- email history (built with the real templates)
+
+// Nothing was actually sent while seeding, so these are logged as "demo"; one is "failed" to show Retry.
+$insertLog = $pdo->prepare(
+    'INSERT INTO email_logs (student_id, record_id, trigger_key, recipients, subject, message, status, error, sent_by, created_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+);
+$findRecord = $pdo->prepare(
+    "SELECT r.*, u.name AS recorded_by_name FROM records r LEFT JOIN users u ON u.id = r.recorded_by
+     WHERE r.student_id = ? AND r.type = ? AND r.value LIKE ? AND r.title LIKE ? ORDER BY r.recorded_on DESC LIMIT 1"
+);
+$emails = [
+    // slug, type, value pattern, title pattern, trigger, status
+    ['juan', 'grade', '%', 'Quarter 1 Math', 'grade_posted', 'demo'],
+    ['juan', 'attendance', 'Late', '%', 'late_arrival', 'demo'],
+    ['ana', 'grade', '%', 'Quarter 1 Science', 'grade_posted', 'demo'],
+    ['kevin', 'library', 'Overdue', '%', 'book_overdue', 'failed'],
+    ['paolo', 'attendance', 'Late', '%', 'late_arrival', 'demo'],
+    ['maria', 'attendance', 'Absent', '%', 'absence_logged', 'demo'],
+];
+foreach ($emails as [$slug, $type, $value, $title, $trigger, $status]) {
+    $findRecord->execute([$studentIds[$slug], $type, $value, $title]);
+    $record = $findRecord->fetch();
+    $student = $pdo->query('SELECT * FROM students WHERE id = ' . (int) $studentIds[$slug])->fetch();
+    $content = EmailTemplateService::compose($trigger, $student, $record);
+    $recipients = $trigger === 'absence_logged' ? [$student['guardian_email']] : [$student['email'], $student['guardian_email']];
+    $insertLog->execute([
+        $student['id'], $record['id'], $trigger, implode(', ', $recipients), $content['subject'], $content['message'],
+        $status, $status === 'failed' ? 'Seeded example: the EmailJS request timed out' : null,
+        $record['recorded_by'] ?? $santosId,
+        date('Y-m-d H:i:s', strtotime($record['created_at']) + 4),
+    ]);
 }
 
 // ---------------------------------------------------------------- summary

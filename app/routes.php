@@ -8,6 +8,7 @@
 use App\Controllers\AiController;
 use App\Controllers\AuthController;
 use App\Controllers\DashboardController;
+use App\Controllers\EmailController;
 use App\Controllers\HomeController;
 use App\Controllers\PortalController;
 use App\Controllers\RecordController;
@@ -36,6 +37,13 @@ $router->post('/records/{id}/delete', [RecordController::class, 'destroy'], STAF
 // API 1: AI Assistant (Gemini, server side)
 $router->get('/ai', [AiController::class, 'index'], STAFF);
 $router->post('/api/ai/ask', [AiController::class, 'ask'], STAFF);
+
+// API 2: Email Alerts (EmailJS in the browser; the server builds content and logs results)
+$router->get('/emails', [EmailController::class, 'index'], STAFF);
+$router->get('/api/email/compose', [EmailController::class, 'compose'], STAFF);
+$router->get('/api/email/logs/{id}', [EmailController::class, 'show'], STAFF);
+$router->post('/api/email/log', [EmailController::class, 'log'], STAFF);
+$router->post('/api/email/triggers', [EmailController::class, 'triggers'], STAFF);
 
 // Student / parent portal
 $router->get('/my/records', [PortalController::class, 'records'], PORTAL);

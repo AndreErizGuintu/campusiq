@@ -7,7 +7,6 @@
  * @var string|null $type
  * @var array|null $editing
  * @var int|null $highlight id of the record just saved
- * @var string|null $triggerNote
  */
 use App\Models\Record;
 use App\Models\Student;
@@ -93,7 +92,7 @@ $columns = 'md:grid-cols-[120px_minmax(0,1fr)_120px_90px_72px]';
         </section>
 
         <div class="lg:sticky lg:top-24 lg:w-[360px] lg:shrink-0">
-            <?= partial('record-form', ['student' => $student, 'editing' => $editing, 'triggerNote' => $triggerNote ?? null]) ?>
+            <?= partial('record-form', ['student' => $student, 'editing' => $editing]) ?>
         </div>
     </div>
 </div>

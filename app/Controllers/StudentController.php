@@ -46,11 +46,12 @@ class StudentController extends Controller
             'type' => $type,
             'editing' => $editing,
             'highlight' => $highlight,
+            'scripts' => ['email.js'],
             'pendingEmail' => $this->takePendingEmail(),
         ]);
     }
 
-    /** An auto email queued by RecordController, sent by email.js on this page load (Phase 5). */
+    /** An auto email queued by RecordController, sent by email.js on this page load. */
     protected function takePendingEmail(): ?array
     {
         $pending = $_SESSION['_pending_email'] ?? null;
