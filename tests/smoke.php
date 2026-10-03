@@ -109,7 +109,7 @@ foreach ([
 
 // Every protected page sends guests to /login
 echo "\nGuests are redirected\n";
-$staffPages = ['/dashboard', '/students', '/students?q=juan', '/students/1', '/students/1?type=grade'];
+$staffPages = ['/dashboard', '/students', '/students?q=juan', '/students/1', '/students/1?type=grade', '/ai', '/ai?student=1'];
 $portalPages = ['/my/records'];
 foreach ([...$staffPages, ...$portalPages] as $path) {
     $response = fetch($base . $path);

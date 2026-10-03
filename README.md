@@ -36,3 +36,5 @@ Drops and recreates `campusiq`, imports `database/schema.sql`, clears `storage/r
 - A failed CSRF check returns 403 "Your session expired" (Apache rewrites the non-standard 419 code to 500).
 - Five failed logins in a row lock the login form for 60 seconds (per session).
 - Mobile bottom tab bar for staff: Dashboard, Students, AI, Email, PDF (Students replaces Home, which stays reachable from the logo). Portal tabs: Records, Reports, Inbox.
+- AI Assistant uses Gemini `models/{GEMINI_MODEL}:generateContent` with the `x-goog-api-key` header and a JSON response schema (`answer` + optional `table`). For `gemini-2.5-flash*` models thinking is turned off (`thinkingBudget: 0`) so answers come back fast. The question picks the records: a student named in it (or passed from the student page), a section (10-A / 10-B), record types from keywords, and dates ("today", "this week", "last week", "this month", "last N days"). At most 400 rows go to the model, plus pre-computed per-student totals so counts are exact.
+- AI history on the page shows the last 6 questions of the logged-in staff member (tables are stored as plain lines in `ai_queries.answer`).

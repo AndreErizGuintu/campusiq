@@ -5,6 +5,7 @@
  * @var App\Core\Router $router
  */
 
+use App\Controllers\AiController;
 use App\Controllers\AuthController;
 use App\Controllers\DashboardController;
 use App\Controllers\HomeController;
@@ -31,6 +32,10 @@ $router->get('/students/{id}', [StudentController::class, 'show'], STAFF);
 $router->post('/students/{id}/records', [RecordController::class, 'store'], STAFF);
 $router->post('/records/{id}', [RecordController::class, 'update'], STAFF);
 $router->post('/records/{id}/delete', [RecordController::class, 'destroy'], STAFF);
+
+// API 1: AI Assistant (Gemini, server side)
+$router->get('/ai', [AiController::class, 'index'], STAFF);
+$router->post('/api/ai/ask', [AiController::class, 'ask'], STAFF);
 
 // Student / parent portal
 $router->get('/my/records', [PortalController::class, 'records'], PORTAL);
