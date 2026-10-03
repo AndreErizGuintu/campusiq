@@ -174,10 +174,10 @@
   }
 
   /* Data rows */
-  .table-head {
+  .data-head {
     @apply border-b border-line px-5 py-3 text-[11px] font-semibold tracking-[.05em] text-faint uppercase;
   }
-  .table-row {
+  .data-row {
     @apply border-b border-line-soft px-5 py-3 text-[13.5px] last:border-b-0;
   }
 

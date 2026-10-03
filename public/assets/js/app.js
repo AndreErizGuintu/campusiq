@@ -149,6 +149,27 @@
     }
   });
 
+  // Record form: show the fields for the chosen type (grade / attendance / library).
+  const recordForm = document.querySelector('[data-record-form]');
+  if (recordForm) {
+    const typeSelect = recordForm.querySelector('[data-record-type]');
+    const applyType = () => {
+      const type = typeSelect.value;
+      recordForm.querySelectorAll('[data-show-for]').forEach((el) => {
+        el.hidden = !el.dataset.showFor.split(' ').includes(type);
+      });
+      recordForm.querySelectorAll(`[data-placeholder-${type}]`).forEach((el) => {
+        el.placeholder = el.getAttribute(`data-placeholder-${type}`);
+      });
+      recordForm.dispatchEvent(new CustomEvent('record-form:change'));
+    };
+    typeSelect.addEventListener('change', applyType);
+    recordForm.addEventListener('change', (event) => {
+      if (event.target !== typeSelect) recordForm.dispatchEvent(new CustomEvent('record-form:change'));
+    });
+    applyType();
+  }
+
   // Sign up: the email hint follows the chosen role.
   const signup = document.querySelector('[data-signup-form]');
   if (signup) {

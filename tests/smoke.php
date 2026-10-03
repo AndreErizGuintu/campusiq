@@ -109,7 +109,7 @@ foreach ([
 
 // Every protected page sends guests to /login
 echo "\nGuests are redirected\n";
-$staffPages = ['/dashboard'];
+$staffPages = ['/dashboard', '/students', '/students?q=juan', '/students/1', '/students/1?type=grade'];
 $portalPages = ['/my/records'];
 foreach ([...$staffPages, ...$portalPages] as $path) {
     $response = fetch($base . $path);
@@ -122,6 +122,7 @@ loginAs('staff', 'T-0012');
 foreach ($staffPages as $path) {
     check("GET {$path}", fetch($base . $path, 'staff'), [200]);
 }
+check('GET /students/9999 (missing)', fetch("{$base}/students/9999", 'staff'), [404]);
 foreach ($portalPages as $path) {
     check("GET {$path} (portal only)", fetch($base . $path, 'staff'), [403]);
 }

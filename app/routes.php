@@ -9,6 +9,8 @@ use App\Controllers\AuthController;
 use App\Controllers\DashboardController;
 use App\Controllers\HomeController;
 use App\Controllers\PortalController;
+use App\Controllers\RecordController;
+use App\Controllers\StudentController;
 
 const STAFF = ['staff'];
 const PORTAL = ['student', 'parent'];
@@ -24,6 +26,11 @@ $router->post('/logout', [AuthController::class, 'logout'], ANY_USER);
 
 // Staff
 $router->get('/dashboard', [DashboardController::class, 'index'], STAFF);
+$router->get('/students', [StudentController::class, 'index'], STAFF);
+$router->get('/students/{id}', [StudentController::class, 'show'], STAFF);
+$router->post('/students/{id}/records', [RecordController::class, 'store'], STAFF);
+$router->post('/records/{id}', [RecordController::class, 'update'], STAFF);
+$router->post('/records/{id}/delete', [RecordController::class, 'destroy'], STAFF);
 
 // Student / parent portal
 $router->get('/my/records', [PortalController::class, 'records'], PORTAL);
