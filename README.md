@@ -4,7 +4,25 @@ AI-Augmented Academic Records and Integration System. Systems Integration and Ar
 
 Plain PHP 8 + MySQL on XAMPP, Tailwind CSS v4, vanilla JS. Three APIs: Gemini (AI Assistant), EmailJS (Email Alerts), PDFShift (PDF Reports).
 
-_Setup steps, demo logins and notes are filled in as each phase lands._
+_Setup steps and notes are filled in as each phase lands._
+
+## Demo logins
+
+All demo passwords are `password123`. You can log in with the ID number or the email.
+
+| Role | Name | ID number | Lands on |
+|---|---|---|---|
+| Staff (Class Adviser) | Ms. Santos | `T-0012` | /dashboard |
+| Staff (Teacher) | Mr. Garcia | `T-0015` | /dashboard |
+| Student | Juan Dela Cruz | `10-24031` | /my/records |
+| Parent (Juan's guardian) | Rosa Dela Cruz | `P-10-24031` | /my/records |
+
+## Reset the database
+
+```
+bash database/reset.sh
+```
+Drops and recreates `campusiq`, imports `database/schema.sql`, clears `storage/reports/`, and runs `database/seed.php`. Attendance is generated for the last 15 school days counting back from today, so the dashboard always has fresh data after a reset.
 
 ## Decisions made during the build
 
