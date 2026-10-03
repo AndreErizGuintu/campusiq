@@ -54,3 +54,5 @@ $router->get('/reports/{id}/download', [ReportController::class, 'download'], AN
 
 // Student / parent portal
 $router->get('/my/records', [PortalController::class, 'records'], PORTAL);
+$router->get('/my/reports', [PortalController::class, 'reports'], PORTAL);
+$router->get('/my/notifications', [PortalController::class, 'notifications'], PORTAL);

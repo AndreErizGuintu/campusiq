@@ -40,8 +40,11 @@
     progress.querySelector('[data-report-step-label]').textContent = `Step ${stepIndex} of 4`;
   }
 
+  const dialog = modal.querySelector('[role="dialog"]');
+
   function open(studentLabel) {
     progress.innerHTML = progressHtml;
+    if (variantPortal) dialog.classList.replace('max-w-[640px]', 'max-w-[480px]');
     progress.querySelector('[data-report-cancel]').addEventListener('click', close);
     if (!variantPortal) {
       progress.querySelector('[data-report-subtitle]').textContent = studentLabel || '';
@@ -182,6 +185,7 @@
       const r = data.report;
       const live = r.mode === 'live';
       setTimeout(() => {
+        dialog.classList.replace('max-w-[480px]', 'max-w-[640px]');
         progress.innerHTML = `
           <div class="flex flex-col gap-6 sm:flex-row">
             <div class="relative mx-auto h-[297px] w-[210px] shrink-0 overflow-hidden rounded border border-line bg-white shadow-[0_6px_18px_rgba(20,22,40,.10)] sm:mx-0">

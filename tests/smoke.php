@@ -110,7 +110,7 @@ foreach ([
 // Every protected page sends guests to /login
 echo "\nGuests are redirected\n";
 $staffPages = ['/dashboard', '/students', '/students?q=juan', '/students/1', '/students/1?type=grade', '/ai', '/ai?student=1', '/emails', '/emails?student=2&template=absence_logged', '/reports', '/reports?student=3', '/api/email/compose?student_id=1&template=grade_posted'];
-$portalPages = ['/my/records'];
+$portalPages = ['/my/records', '/my/records?type=grade', '/my/reports', '/my/notifications', '/my/notifications?id=1'];
 foreach ([...$staffPages, ...$portalPages] as $path) {
     // Pages redirect to /login; JSON endpoints answer 401.
     check("GET {$path} as guest", fetch($base . $path), str_starts_with($path, '/api/') ? [401] : [302]);
@@ -154,6 +154,7 @@ foreach (['student' => '10-24031', 'parent' => 'P-10-24031'] as $session => $log
     foreach ($staffPages as $path) {
         check("GET {$path} (staff only)", fetch($base . $path, $session), [403]);
     }
+    check("GET /api/email/compose (staff API)", fetch("{$base}/api/email/compose?student_id=1&template=grade_posted", $session), [403]);
     check("GET own report download", fetch("{$base}/reports/{$reportIds[1]}/download", $session), [200]);
     check("GET other student's report (blocked)", fetch("{$base}/reports/{$reportIds[2]}/download", $session), [403]);
 }
