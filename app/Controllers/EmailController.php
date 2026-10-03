@@ -47,7 +47,7 @@ class EmailController extends Controller
         ]);
     }
 
-    /** GET /api/email/compose?student_id=&template=&to=&report= : recipients, subject and message preview. */
+    /** GET /api/emails/compose?student_id=&template=&to=&report= : recipients, subject and message preview. */
     public function compose(Request $request): Response
     {
         $student = Student::find((int) $request->query('student_id', 0));
@@ -78,7 +78,7 @@ class EmailController extends Controller
         return $this->json(['ok' => true, 'email' => $payload]);
     }
 
-    /** GET /api/email/logs/{id} : the payload to retry a logged email. */
+    /** GET /api/emails/logs/{id} : the payload to retry a logged email. */
     public function show(Request $request, int $id): Response
     {
         $log = EmailLog::findDetailed($id) ?? Response::error(404);
@@ -103,7 +103,7 @@ class EmailController extends Controller
         ]]);
     }
 
-    /** POST /api/email/log : record what EmailJS did (or the demo). Retries update the same row. */
+    /** POST /api/emails/logs : record what EmailJS did (or the demo). Retries update the same row. */
     public function log(Request $request): Response
     {
         $student = Student::find((int) $request->input('student_id', 0));
@@ -114,7 +114,7 @@ class EmailController extends Controller
         $allowed = [strtolower($student['email']), strtolower($student['guardian_email'])];
         $recipients = array_values(array_unique(array_filter(array_map(
             static fn ($e) => strtolower(trim((string) $e)),
-            (array) $request->input('recipients', [])
+            $request->array('recipients')
         ))));
         if (!$recipients || array_diff($recipients, $allowed)) {
             return $this->json(['ok' => false, 'error' => 'Emails can only go to the student and their guardian on file.'], 422);
@@ -176,7 +176,7 @@ class EmailController extends Controller
         ]);
     }
 
-    /** POST /api/email/triggers : turn one automatic trigger on or off. */
+    /** POST /api/emails/triggers : turn one automatic trigger on or off. */
     public function triggers(Request $request): Response
     {
         $key = (string) $request->input('key', '');

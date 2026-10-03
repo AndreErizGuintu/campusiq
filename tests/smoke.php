@@ -109,18 +109,26 @@ foreach ([
 
 // Every protected page sends guests to /login
 echo "\nGuests are redirected\n";
-$staffPages = ['/dashboard', '/students', '/students?q=juan', '/students/1', '/students/1?type=grade', '/ai', '/ai?student=1', '/emails', '/emails?student=2&template=absence_logged', '/reports', '/reports?student=3', '/api/email/compose?student_id=1&template=grade_posted'];
+$staffPages = ['/dashboard', '/students', '/students?q=juan', '/students/1', '/students/1?type=grade', '/ai', '/ai?student=1', '/emails', '/emails?student=2&template=absence_logged', '/reports', '/reports?student=3', '/api/emails/compose?student_id=1&template=grade_posted'];
 $portalPages = ['/my/records', '/my/records?type=grade', '/my/reports', '/my/notifications', '/my/notifications?id=1'];
 foreach ([...$staffPages, ...$portalPages] as $path) {
     // Pages redirect to /login; JSON endpoints answer 401.
     check("GET {$path} as guest", fetch($base . $path), str_starts_with($path, '/api/') ? [401] : [302]);
 }
+$loginPage = fetch("{$base}/login", 'arrays');
+check('POST /login with login[] (array input)', fetch("{$base}/login", 'arrays', 'POST', ['_csrf' => csrfFrom($loginPage['body']), 'login' => ['x'], 'password' => 'y']), [302]);
+$signupPage = fetch("{$base}/signup", 'arrays');
+check('POST /signup with email[] (array input)', fetch("{$base}/signup", 'arrays', 'POST', ['_csrf' => csrfFrom($signupPage['body']), 'role' => 'student', 'student_no' => '10-24031', 'email' => ['x'], 'password' => 'abcdefgh', 'password_confirmation' => 'abcdefgh']), [302]);
 check('POST /login without CSRF', fetch("{$base}/login", 'guest', 'POST', ['login' => 'T-0012', 'password' => 'password123']), [403]);
 
 echo "\nStaff (T-0012)\n";
 loginAs('staff', 'T-0012');
 foreach ($staffPages as $path) {
     check("GET {$path}", fetch($base . $path, 'staff'), [200]);
+}
+// Crafted array input must never crash a page (was a 500 before the review fixes).
+foreach (['/students?q[]=x', '/emails?template[]=x&student[]=1', '/reports?student[]=1', '/ai?student[]=1'] as $path) {
+    check("GET {$path} (array input)", fetch($base . $path, 'staff'), [200]);
 }
 check('GET /students/9999 (missing)', fetch("{$base}/students/9999", 'staff'), [404]);
 foreach ($portalPages as $path) {
@@ -154,7 +162,7 @@ foreach (['student' => '10-24031', 'parent' => 'P-10-24031'] as $session => $log
     foreach ($staffPages as $path) {
         check("GET {$path} (staff only)", fetch($base . $path, $session), [403]);
     }
-    check("GET /api/email/compose (staff API)", fetch("{$base}/api/email/compose?student_id=1&template=grade_posted", $session), [403]);
+    check("GET /api/emails/compose (staff API)", fetch("{$base}/api/emails/compose?student_id=1&template=grade_posted", $session), [403]);
     check("GET own report download", fetch("{$base}/reports/{$reportIds[1]}/download", $session), [200]);
     check("GET other student's report (blocked)", fetch("{$base}/reports/{$reportIds[2]}/download", $session), [403]);
 }

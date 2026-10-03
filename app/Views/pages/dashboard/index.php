@@ -76,7 +76,7 @@ $activityStyle = [
             <a href="<?= e(url('/students')) ?>" class="text-[12.5px] font-medium text-primary hover:underline">All records &rarr;</a>
         </div>
         <?php if ($activity): ?>
-            <ul class="grid lg:grid-cols-2 lg:gap-x-8">
+            <ul class="grid grid-cols-[minmax(0,1fr)] lg:grid-cols-2 lg:gap-x-8">
                 <?php foreach ($activity as $item): [$iconName, $iconClass] = $activityStyle[$item['kind']]; ?>
                     <li class="border-b border-line-soft last:border-b-0 lg:[&:nth-last-child(2):nth-child(odd)]:border-b-0">
                         <a href="<?= e(url($item['href'])) ?>" class="flex items-center gap-3 py-[11px] hover:text-primary">

@@ -41,10 +41,10 @@ $router->post('/api/ai/ask', [AiController::class, 'ask'], STAFF);
 
 // API 2: Email Alerts (EmailJS in the browser; the server builds content and logs results)
 $router->get('/emails', [EmailController::class, 'index'], STAFF);
-$router->get('/api/email/compose', [EmailController::class, 'compose'], STAFF);
-$router->get('/api/email/logs/{id}', [EmailController::class, 'show'], STAFF);
-$router->post('/api/email/log', [EmailController::class, 'log'], STAFF);
-$router->post('/api/email/triggers', [EmailController::class, 'triggers'], STAFF);
+$router->get('/api/emails/compose', [EmailController::class, 'compose'], STAFF);
+$router->get('/api/emails/logs/{id}', [EmailController::class, 'show'], STAFF);
+$router->post('/api/emails/logs', [EmailController::class, 'log'], STAFF);
+$router->post('/api/emails/triggers', [EmailController::class, 'triggers'], STAFF);
 
 // API 3: PDF Reports (PDFShift, server side). Files only through routes that check ownership.
 $router->get('/reports', [ReportController::class, 'index'], STAFF);

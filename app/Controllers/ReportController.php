@@ -54,7 +54,7 @@ class ReportController extends Controller
             $type = (string) $request->input('report_type', 'full');
             $from = $this->date($request->input('date_from'));
             $to = $this->date($request->input('date_to'));
-            $sections = array_values(array_intersect(array_keys(Report::SECTIONS), (array) $request->input('sections', [])));
+            $sections = array_values(array_intersect(array_keys(Report::SECTIONS), $request->array('sections')));
 
             $error = match (true) {
                 !$student => 'Pick a student.',
@@ -68,8 +68,13 @@ class ReportController extends Controller
                 return $this->json(['ok' => false, 'error' => $error], 422);
             }
         } else {
-            // Students and parents: always their own linked student, the full record.
+            // Students and parents: always their own linked student, the full record, at most one every 20 seconds.
             $student = $this->linkedStudent();
+            $wait = (int) ($_SESSION['_last_portal_report'] ?? 0) + 20 - time();
+            if ($wait > 0) {
+                return $this->json(['ok' => false, 'error' => "You just made a PDF. Wait {$wait} seconds before making another."], 429);
+            }
+            $_SESSION['_last_portal_report'] = time();
             $type = 'full';
             $from = $to = null;
             $sections = ['grades', 'attendance', 'library'];

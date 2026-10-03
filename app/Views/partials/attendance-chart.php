@@ -12,7 +12,7 @@ $height = 190;
 $left = 40;
 $right = 550;
 $base = 160;
-$top = 16;
+$top = 26;
 $barWidth = 40;
 $radius = 4;
 
@@ -37,7 +37,7 @@ $summary = implode(', ', array_map(
          aria-label="Bar chart of students present out of <?= (int) $total ?>: <?= e($summary) ?>.">
         <?php for ($tick = 0; $tick <= $max; $tick += $step): $ty = round($y($tick), 1); ?>
             <line x1="<?= $left ?>" y1="<?= $ty ?>" x2="<?= $right ?>" y2="<?= $ty ?>" stroke="<?= $tick === 0 ? '#d3d7e2' : '#eef0f5' ?>" stroke-width="1"/>
-            <text x="30" y="<?= $ty + 4 ?>" text-anchor="end" class="fill-faint font-sans text-[11px]"><?= $tick ?></text>
+            <text x="30" y="<?= $ty + 4 ?>" text-anchor="end" class="fill-faint font-sans text-[18px] sm:text-[14px] xl:text-[11px]"><?= $tick ?></text>
         <?php endfor; ?>
 
         <?php foreach ($days as $i => $day):
@@ -56,8 +56,8 @@ $summary = implode(', ', array_map(
                 <title><?= e(fmt_date($day['date'])) ?>: <?= $day['present'] ?> of <?= $day['marked'] ?> present<?= $day['late'] ? " ({$day['late']} late)" : '' ?></title>
                 <rect x="<?= round($cx - $slot / 2, 1) ?>" y="<?= $top ?>" width="<?= round($slot, 1) ?>" height="<?= $base - $top ?>" fill="transparent"/>
                 <path d="<?= $path ?>" class="fill-primary transition-opacity group-hover:opacity-80"/>
-                <text x="<?= round($cx, 1) ?>" y="<?= round($barTop - 7, 1) ?>" text-anchor="middle" class="fill-body font-mono text-[11px] font-semibold"><?= $day['present'] ?></text>
-                <text x="<?= round($cx, 1) ?>" y="180" text-anchor="middle" class="fill-faint font-sans text-[11px]"><?= e($label) ?></text>
+                <text x="<?= round($cx, 1) ?>" y="<?= round($barTop - 6, 1) ?>" text-anchor="middle" class="fill-body font-mono text-[18px] font-semibold sm:text-[14px] xl:text-[11px]"><?= $day['present'] ?></text>
+                <text x="<?= round($cx, 1) ?>" y="180" text-anchor="middle" class="fill-faint font-sans text-[18px] sm:text-[14px] xl:text-[11px]"><?= e($label) ?></text>
             </g>
         <?php endforeach; ?>
     </svg>

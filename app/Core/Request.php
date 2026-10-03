@@ -43,22 +43,36 @@ class Request
         return $this->method === 'POST';
     }
 
-    /** Form field or JSON body field. */
+    /**
+     * One scalar form or JSON field, trimmed. Arrays (e.g. ?q[]=x) give the default instead,
+     * so a crafted request can't reach code that expects a string. Use array() for list fields.
+     */
     public function input(string $key, mixed $default = null): mixed
     {
-        if (array_key_exists($key, $this->post)) {
-            return is_string($this->post[$key]) ? trim($this->post[$key]) : $this->post[$key];
-        }
-        $json = $this->json();
-        if (array_key_exists($key, $json)) {
-            return is_string($json[$key]) ? trim($json[$key]) : $json[$key];
-        }
-        return $default;
+        $value = array_key_exists($key, $this->post) ? $this->post[$key] : ($this->json()[$key] ?? null);
+
+        return self::scalar($value, $default);
     }
 
     public function query(string $key, mixed $default = null): mixed
     {
-        $value = $this->query[$key] ?? $default;
+        return self::scalar($this->query[$key] ?? null, $default);
+    }
+
+    /** A list field (sections[], recipients): always an array of trimmed strings. */
+    public function array(string $key): array
+    {
+        $value = array_key_exists($key, $this->post) ? $this->post[$key] : ($this->json()[$key] ?? []);
+
+        return is_array($value) ? array_values(array_map('trim', array_filter($value, 'is_scalar'))) : [];
+    }
+
+    private static function scalar(mixed $value, mixed $default): mixed
+    {
+        if ($value === null || !is_scalar($value)) {
+            return $default;
+        }
+
         return is_string($value) ? trim($value) : $value;
     }
 

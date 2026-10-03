@@ -124,7 +124,7 @@
     if (demo) {
       const form = document.querySelector('[data-login-form]');
       form.querySelector('[name="login"]').value = demo.dataset.demoLogin;
-      form.querySelector('[name="password"]').value = 'password123';
+      form.querySelector('[name="password"]').value = demo.dataset.demoPassword;
       form.requestSubmit();
     }
   });

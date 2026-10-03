@@ -1,7 +1,7 @@
 /*
  * API 2: Email Alerts through the EmailJS browser SDK.
  * - Auto send: after a record is saved, the next page load carries config.pendingEmail; it is sent here,
- *   then the result is POSTed to /api/email/log.
+ *   then the result is POSTed to /api/emails/logs.
  * - Email Alerts page: compose, send, retry failed, toggle automatic triggers.
  * Demo mode (no EmailJS keys): nothing is sent, the email is logged with status "demo".
  */
@@ -63,7 +63,7 @@
   }
 
   function logResult(email, outcome) {
-    return api('/api/email/log', {
+    return api('/api/emails/logs', {
       method: 'POST',
       body: {
         log_id: email.log_id || null,
@@ -145,7 +145,7 @@
     };
   }
 
-  /** Send + log + show progress. Returns the /api/email/log response (or null if logging failed). */
+  /** Send + log + show progress. Returns the /api/emails/logs response (or null if logging failed). */
   async function send(email, options = {}) {
     const ui = deliveryCard(email, options);
     const outcome = await deliver(email, (r, state, error) => ui.step(r, state, error));
@@ -205,7 +205,7 @@
         report: form.dataset.report || '',
       });
       try {
-        const data = await api(`/api/email/compose?${params}`);
+        const data = await api(`/api/emails/compose?${params}`);
         if (mine !== request) return;
         current = data.email;
         renderChips();
@@ -280,7 +280,7 @@
       retry.disabled = true;
       retry.textContent = 'Retrying…';
       try {
-        const data = await api(`/api/email/logs/${retry.dataset.retry}`);
+        const data = await api(`/api/emails/logs/${retry.dataset.retry}`);
         const logged = await send(data.email);
         if (logged) addToLog(logged, retry.dataset.retry);
       } catch (error) {
@@ -295,7 +295,7 @@
       const input = event.target;
       if (!input.matches('input[type="checkbox"]')) return;
       try {
-        await api('/api/email/triggers', { method: 'POST', body: { key: input.name, enabled: input.checked } });
+        await api('/api/emails/triggers', { method: 'POST', body: { key: input.name, enabled: input.checked } });
         toast(`${input.parentElement.textContent.trim()}: automatic email ${input.checked ? 'on' : 'off'}`);
       } catch (error) {
         input.checked = !input.checked;

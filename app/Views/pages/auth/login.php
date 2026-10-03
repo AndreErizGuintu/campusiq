@@ -45,7 +45,7 @@ $showDemo = Env::get('APP_ENV') === 'local';
                 <div class="flex items-center gap-3 text-xs text-faint"><span class="h-px grow bg-line"></span>demo shortcuts<span class="h-px grow bg-line"></span></div>
                 <div class="grid grid-cols-3 gap-2.5">
                     <?php foreach ([['T-0012', 'staff'], ['10-24031', 'student'], ['P-10-24031', 'parent']] as [$id, $label]): ?>
-                        <button type="button" class="btn btn-ghost h-10 px-2 text-[13px] font-normal" data-demo-login="<?= e($id) ?>">Enter as <?= e($label) ?></button>
+                        <button type="button" class="btn btn-ghost h-10 px-2 text-[13px] font-normal" data-demo-login="<?= e($id) ?>" data-demo-password="password123">Enter as <?= e($label) ?></button>
                     <?php endforeach; ?>
                 </div>
             <?php endif; ?>

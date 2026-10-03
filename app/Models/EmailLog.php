@@ -24,21 +24,35 @@ class EmailLog extends Model
         return Database::one(self::SELECT . ' WHERE e.id = ?', [$id]);
     }
 
-    /** Emails about one student (the portal inbox). Failed sends never reached anyone, so they're left out. */
-    public static function forStudent(int $studentId): array
+    /**
+     * The portal inbox: emails about one student that were addressed to this viewer
+     * (the student's own email, or the guardian email for parents).
+     * Failed sends never reached anyone, so they're left out.
+     */
+    public static function inbox(int $studentId, string $recipient): array
     {
-        return Database::all(self::SELECT . " WHERE e.student_id = ? AND e.status IN ('sent', 'demo') ORDER BY e.created_at DESC, e.id DESC", [$studentId]);
+        return Database::all(
+            self::SELECT . " WHERE e.student_id = ? AND e.status IN ('sent', 'demo') AND CONCAT(', ', LOWER(e.recipients), ',') LIKE ?
+                            ORDER BY e.created_at DESC, e.id DESC",
+            [$studentId, self::recipientPattern($recipient)]
+        );
     }
 
-    public static function countSince(string $since, ?int $studentId = null): int
+    public static function unreadCount(int $studentId, string $recipient, ?string $since): int
     {
-        $sql = "SELECT COUNT(*) FROM email_logs WHERE created_at > ? AND status IN ('sent', 'demo')";
-        $params = [$since];
-        if ($studentId !== null) {
-            $sql .= ' AND student_id = ?';
-            $params[] = $studentId;
-        }
-        return (int) Database::value($sql, $params);
+        return (int) Database::value(
+            "SELECT COUNT(*) FROM email_logs WHERE student_id = ? AND status IN ('sent', 'demo') AND created_at > ?
+             AND CONCAT(', ', LOWER(recipients), ',') LIKE ?",
+            [$studentId, $since ?? '1970-01-01', self::recipientPattern($recipient)]
+        );
+    }
+
+    /** Matches one address inside the comma-separated recipients list. */
+    private static function recipientPattern(string $email): string
+    {
+        $escaped = addcslashes(strtolower(trim($email)), '\\%_');
+
+        return '%, ' . $escaped . ',%';
     }
 
     public static function thisWeek(): int

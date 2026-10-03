@@ -46,7 +46,7 @@ $subtitle = match ($user['role']) {
 
     <div class="flex shrink-0 items-center gap-3">
         <?php foreach ($topbar['demo'] ?? [] as $key): ?>
-            <?= partial('demo-badge', ['key' => $key]) ?>
+            <span class="hidden md:inline-flex"><?= partial('demo-badge', ['key' => $key]) ?></span>
         <?php endforeach; ?>
 
         <?php if (!empty($topbar['logoutButton'])): ?>
@@ -68,3 +68,8 @@ $subtitle = match ($user['role']) {
         </form>
     </div>
 </header>
+<?php if (!empty($topbar['demo'])): ?>
+    <div class="flex flex-wrap gap-2 border-b border-line bg-white px-4 py-2 md:hidden">
+        <?php foreach ($topbar['demo'] as $key): ?><?= partial('demo-badge', ['key' => $key]) ?><?php endforeach; ?>
+    </div>
+<?php endif; ?>

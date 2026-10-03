@@ -82,6 +82,9 @@ class AuthController extends Controller
      */
     public function signup(Request $request): Response
     {
+        if (Auth::check()) {
+            return $this->redirect(Auth::home());
+        }
         $data = $request->only(['role', 'student_no', 'email', 'password', 'password_confirmation']);
         $data['email'] = strtolower($data['email']);
         $errors = [];

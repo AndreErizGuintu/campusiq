@@ -16,6 +16,7 @@
   let controller = null;
   let timers = [];
   let lastFocus = null;
+  let reloadOnClose = false; // portal: the reports list changed
 
   const STEP_ORDER = ['records', 'build', 'convert', 'ready'];
   const DOT = {
@@ -72,6 +73,7 @@
     modal.hidden = true;
     document.body.style.overflow = '';
     if (lastFocus) lastFocus.focus();
+    if (reloadOnClose) window.location.reload();
   }
 
   modal.addEventListener('keydown', (event) => {
@@ -186,6 +188,7 @@
       const live = r.mode === 'live';
       setTimeout(() => {
         dialog.classList.replace('max-w-[480px]', 'max-w-[640px]');
+        reloadOnClose = true;
         progress.innerHTML = `
           <div class="flex flex-col gap-6 sm:flex-row">
             <div class="relative mx-auto h-[297px] w-[210px] shrink-0 overflow-hidden rounded border border-line bg-white shadow-[0_6px_18px_rgba(20,22,40,.10)] sm:mx-0">
@@ -209,10 +212,7 @@
               </div>
             </div>
           </div>`;
-        progress.querySelector('[data-report-close]').addEventListener('click', () => {
-          close();
-          window.location.reload();
-        });
+        progress.querySelector('[data-report-close]').addEventListener('click', close);
         progress.querySelector('a').focus();
       }, 500);
     });

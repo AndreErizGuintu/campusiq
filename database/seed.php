@@ -89,7 +89,9 @@ foreach ($students as [$no, $first, $last, $section, $guardian, $slug]) {
 
 // ---------------------------------------------------------------- logins for Juan
 
-$juan = $pdo->query("SELECT * FROM students WHERE student_no = '10-24031'")->fetch();
+$findJuan = $pdo->prepare('SELECT * FROM students WHERE student_no = ?');
+$findJuan->execute(['10-24031']);
+$juan = $findJuan->fetch();
 $insertUser->execute(['student', '10-24031', 'Juan Dela Cruz', $juan['email'], $password, $juan['id'], null, $seedStart]);
 $insertUser->execute(['parent', 'P-10-24031', $juan['guardian_name'], $juan['guardian_email'], $password, $juan['id'], null, $seedStart]);
 
@@ -208,6 +210,7 @@ $findRecord = $pdo->prepare(
     "SELECT r.*, u.name AS recorded_by_name FROM records r LEFT JOIN users u ON u.id = r.recorded_by
      WHERE r.student_id = ? AND r.type = ? AND r.value LIKE ? AND r.title LIKE ? ORDER BY r.recorded_on DESC LIMIT 1"
 );
+$findStudent = $pdo->prepare('SELECT * FROM students WHERE id = ?');
 $emails = [
     // slug, type, value pattern, title pattern, trigger, status
     ['juan', 'grade', '%', 'Quarter 1 Math', 'grade_posted', 'demo'],
@@ -220,7 +223,8 @@ $emails = [
 foreach ($emails as [$slug, $type, $value, $title, $trigger, $status]) {
     $findRecord->execute([$studentIds[$slug], $type, $value, $title]);
     $record = $findRecord->fetch();
-    $student = $pdo->query('SELECT * FROM students WHERE id = ' . (int) $studentIds[$slug])->fetch();
+    $findStudent->execute([$studentIds[$slug]]);
+    $student = $findStudent->fetch();
     $content = EmailTemplateService::compose($trigger, $student, $record);
     $recipients = $trigger === 'absence_logged' ? [$student['guardian_email']] : [$student['email'], $student['guardian_email']];
     $insertLog->execute([

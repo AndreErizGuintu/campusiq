@@ -6,6 +6,7 @@ use App\Core\Request;
 use App\Core\Response;
 use App\Models\Record;
 use App\Models\Student;
+use App\Services\EmailTemplateService;
 
 class StudentController extends Controller
 {
@@ -39,7 +40,10 @@ class StudentController extends Controller
 
         return $this->view('students/show', [
             'title' => Student::fullName($student) . ' · CampusIQ',
-            'topbar' => ['crumbs' => [['Students', '/students'], [Student::fullName($student), null]]],
+            'topbar' => [
+                'crumbs' => [['Students', '/students'], [Student::fullName($student), null]],
+                'demo' => array_slice(EmailTemplateService::missingKeys(), 0, 1),
+            ],
             'student' => $student,
             'records' => Record::forStudent($id, $type),
             'counts' => Record::countsByType($id),

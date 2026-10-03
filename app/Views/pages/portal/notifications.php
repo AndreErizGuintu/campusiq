@@ -24,7 +24,7 @@ $preview = static fn (string $message): string => mb_strimwidth(preg_replace('/\
 <div class="flex flex-col gap-4 md:gap-5">
     <div class="<?= $explicit ? 'hidden md:block' : '' ?>">
         <h1 class="text-xl font-semibold md:text-[22px]">Notifications</h1>
-        <p class="mt-1 text-[13px] text-muted">Every email CampusIQ sent <?= $isParent ? 'you and ' . e($student['first_name']) : 'you and your guardian' ?>. They go out on their own when staff change the record.</p>
+        <p class="mt-1 text-[13px] text-muted">Every email CampusIQ sent you<?= $isParent ? ' about ' . e($student['first_name']) : '' ?>. They go out on their own when staff change the record.</p>
     </div>
 
     <?php if (!$emails): ?>

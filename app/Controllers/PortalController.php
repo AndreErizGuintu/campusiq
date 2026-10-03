@@ -25,7 +25,10 @@ class PortalController extends Controller
 
         return $this->portalView('portal/records', $student, [
             'title' => 'My records · CampusIQ',
-            'topbar' => ['crumbs' => [['Home', '/'], [$this->isParent() ? $student['first_name'] . '\'s records' : 'My records', null]]],
+            'topbar' => [
+                'crumbs' => [['Home', '/'], [$this->isParent() ? $student['first_name'] . '\'s records' : 'My records', null]],
+                'demo' => (new PdfShiftService())->isLive() ? [] : ['PDFSHIFT_API_KEY'],
+            ],
             'records' => Record::forStudent((int) $student['id'], $type),
             'counts' => Record::countsByType((int) $student['id']),
             'type' => $type,
@@ -42,7 +45,10 @@ class PortalController extends Controller
 
         return $this->portalView('portal/reports', $student, [
             'title' => 'Reports · CampusIQ',
-            'topbar' => ['crumbs' => [['Home', '/'], ['Reports', null]]],
+            'topbar' => [
+                'crumbs' => [['Home', '/'], ['Reports', null]],
+                'demo' => (new PdfShiftService())->isLive() ? [] : ['PDFSHIFT_API_KEY'],
+            ],
             'reports' => Report::forStudent((int) $student['id']),
             'live' => (new PdfShiftService())->isLive(),
             'scripts' => ['reports.js'],
@@ -53,7 +59,7 @@ class PortalController extends Controller
     {
         $student = $this->linkedStudent();
         $user = Auth::user();
-        $emails = EmailLog::forStudent((int) $student['id']);
+        $emails = EmailLog::inbox((int) $student['id'], $this->inboxAddress($student));
 
         $selectedId = (int) $request->query('id', 0);
         $selected = null;
@@ -91,11 +97,17 @@ class PortalController extends Controller
         $user = Auth::user();
         $data += [
             'student' => $student,
-            'unread' => EmailLog::countSince($user['notifications_seen_at'] ?? '1970-01-01', (int) $student['id']),
+            'unread' => EmailLog::unreadCount((int) $student['id'], $this->inboxAddress($student), $user['notifications_seen_at']),
             'isParent' => $this->isParent(),
         ];
 
         return $this->view($page, $data, 'portal');
+    }
+
+    /** Parents read the mail sent to the guardian address, students the mail sent to their own. */
+    private function inboxAddress(array $student): string
+    {
+        return $this->isParent() ? $student['guardian_email'] : $student['email'];
     }
 
     private function isParent(): bool

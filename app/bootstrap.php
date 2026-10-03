@@ -42,6 +42,8 @@ if (PHP_SAPI !== 'cli') {
         App\Core\Response::error(500, $e);
     });
 
+    // Sessions live as long as the "Remember me" cookie (7 days) instead of PHP's 24-minute default.
+    ini_set('session.gc_maxlifetime', (string) (60 * 60 * 24 * 7));
     session_name('campusiq_session');
     session_set_cookie_params([
         'lifetime' => 0,
