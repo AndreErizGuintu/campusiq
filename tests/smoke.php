@@ -109,7 +109,7 @@ foreach ([
 
 // Every protected page sends guests to /login
 echo "\nGuests are redirected\n";
-$staffPages = ['/dashboard', '/students', '/students?q=juan', '/students/1', '/students/1?type=grade', '/ai', '/ai?student=1', '/emails', '/emails?student=2&template=absence_logged', '/api/email/compose?student_id=1&template=grade_posted'];
+$staffPages = ['/dashboard', '/students', '/students?q=juan', '/students/1', '/students/1?type=grade', '/ai', '/ai?student=1', '/emails', '/emails?student=2&template=absence_logged', '/reports', '/reports?student=3', '/api/email/compose?student_id=1&template=grade_posted'];
 $portalPages = ['/my/records'];
 foreach ([...$staffPages, ...$portalPages] as $path) {
     // Pages redirect to /login; JSON endpoints answer 401.
@@ -127,6 +127,24 @@ foreach ($portalPages as $path) {
     check("GET {$path} (portal only)", fetch($base . $path, 'staff'), [403]);
 }
 
+// Generate one report for Juan (student 1) and one for Maria (student 2) to test download ownership.
+$staffPage = fetch("{$base}/reports", 'staff');
+$reportIds = [];
+foreach ([1, 2] as $sid) {
+    $response = fetch("{$base}/api/reports", 'staff', 'POST', [
+        '_csrf' => csrfFrom($staffPage['body']) ?: (preg_match('/name="csrf-token" content="([^"]+)"/', $staffPage['body'], $m) ? $m[1] : ''),
+        'student_id' => $sid, 'report_type' => 'full', 'date_from' => '', 'date_to' => '',
+        'sections' => ['grades', 'attendance', 'library'],
+    ]);
+    check("POST /api/reports (student {$sid})", $response, [200]);
+    $reportIds[$sid] = (int) (json_decode($response['body'], true)['report']['id'] ?? 0);
+}
+check('GET /reports/{juan}/download', fetch("{$base}/reports/{$reportIds[1]}/download", 'staff'), [200]);
+check('GET /reports/{juan}/preview', fetch("{$base}/reports/{$reportIds[1]}/preview", 'staff'), [200]);
+check('GET /reports/9999/download (missing)', fetch("{$base}/reports/9999/download", 'staff'), [404]);
+check('GET /reports/{juan}/download as guest', fetch("{$base}/reports/{$reportIds[1]}/download"), [302]);
+check('GET /storage/reports/ direct', fetch("{$base}/storage/reports/"), [403]);
+
 foreach (['student' => '10-24031', 'parent' => 'P-10-24031'] as $session => $login) {
     echo "\n" . ucfirst($session) . " ({$login})\n";
     loginAs($session, $login);
@@ -136,6 +154,8 @@ foreach (['student' => '10-24031', 'parent' => 'P-10-24031'] as $session => $log
     foreach ($staffPages as $path) {
         check("GET {$path} (staff only)", fetch($base . $path, $session), [403]);
     }
+    check("GET own report download", fetch("{$base}/reports/{$reportIds[1]}/download", $session), [200]);
+    check("GET other student's report (blocked)", fetch("{$base}/reports/{$reportIds[2]}/download", $session), [403]);
 }
 
 echo "\n{$checks} checks, {$failures} failed\n";

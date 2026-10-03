@@ -12,6 +12,7 @@ use App\Controllers\EmailController;
 use App\Controllers\HomeController;
 use App\Controllers\PortalController;
 use App\Controllers\RecordController;
+use App\Controllers\ReportController;
 use App\Controllers\StudentController;
 
 const STAFF = ['staff'];
@@ -44,6 +45,12 @@ $router->get('/api/email/compose', [EmailController::class, 'compose'], STAFF);
 $router->get('/api/email/logs/{id}', [EmailController::class, 'show'], STAFF);
 $router->post('/api/email/log', [EmailController::class, 'log'], STAFF);
 $router->post('/api/email/triggers', [EmailController::class, 'triggers'], STAFF);
+
+// API 3: PDF Reports (PDFShift, server side). Files only through routes that check ownership.
+$router->get('/reports', [ReportController::class, 'index'], STAFF);
+$router->post('/api/reports', [ReportController::class, 'generate'], ANY_USER);
+$router->get('/reports/{id}/preview', [ReportController::class, 'preview'], ANY_USER);
+$router->get('/reports/{id}/download', [ReportController::class, 'download'], ANY_USER);
 
 // Student / parent portal
 $router->get('/my/records', [PortalController::class, 'records'], PORTAL);
