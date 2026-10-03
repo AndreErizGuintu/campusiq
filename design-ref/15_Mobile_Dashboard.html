@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Dashboard, mobile</title>
+<meta name="viewport" content="width=390"><style>x-dc,helmet{display:contents} html,body{margin:0;width:390px}</style>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+body{margin:0}
+.card{background:#fff;border:1px solid #e3e6ee;border-radius:12px}
+.sl{font-size:11px;color:#6b7083}
+.sv{font-family:'IBM Plex Mono',monospace;font-size:22px;font-weight:600}
+.qa{display:flex;align-items:center;gap:12px;padding:12px;border:1px solid #e3e6ee;border-radius:10px;background:#fff;text-decoration:none;color:#1b1e27}
+.qi{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.tag{font-family:'IBM Plex Mono',monospace;font-size:9.5px;font-weight:600;color:#4338ca;background:rgba(67,56,202,.09);padding:2px 5px;border-radius:4px;margin-left:6px}
+.tab{flex-grow:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:10.5px;color:#8f94ad;text-decoration:none;height:56px}
+.tab.on{color:#4338ca;font-weight:500}
+</style>
+</helmet>
+
+<div style="width: 390px; height: 844px; display: flex; flex-direction: column; background: #f5f6fa; font-family: 'IBM Plex Sans', sans-serif; color: #1b1e27; overflow: hidden;">
+  <header style="flex-shrink: 0; background: #fff; border-bottom: 1px solid #e3e6ee; display: flex; align-items: center; justify-content: space-between; padding: 12px 16px;">
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <div style="width: 40px; height: 40px; border-radius: 50%; background: #fde7d6; color: #9a4a08; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 13px;">MS</div>
+      <div><div style="font-family: 'IBM Plex Mono', monospace; font-size: 15px; font-weight: 600;">Hi, Ms. Santos</div><div style="font-size: 11.5px; color: #6b7083;">Grade 10-A &middot; Mon, Sept 28</div></div>
+    </div>
+    <a href="Main.html" aria-label="Log out" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center;"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#454a5c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 4H4v12h4M12 7l3 3-3 3M15 10H8"/></svg></a>
+  </header>
+
+  <div style="flex-grow: 1; padding: 16px; display: flex; flex-direction: column; gap: 14px; overflow: hidden;">
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px;">
+      <div class="card" style="padding: 12px 14px;"><div class="sl">Present today</div><div class="sv">35<span style="font-size: 13px; color: #9095a5;">/38</span></div></div>
+      <div class="card" style="padding: 12px 14px;"><div class="sl">Emails this week</div><div class="sv">47</div></div>
+      <div class="card" style="padding: 12px 14px;"><div class="sl">Records this week</div><div class="sv">112</div></div>
+      <div class="card" style="padding: 12px 14px;"><div class="sl">PDF reports</div><div class="sv">9</div></div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 8px;">
+      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600;">Quick access</div>
+      <a class="qa" href="StaffAskAI.html"><div class="qi" style="background: rgba(67,56,202,.1);"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#4338ca" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3l1.6 4.4L16 9l-4.4 1.6L10 15l-1.6-4.4L4 9l4.4-1.6z"/></svg></div><div style="flex-grow: 1;"><div style="font-size: 14px; font-weight: 600;">AI Assistant<span class="tag">API 1</span></div><div style="font-size: 11.5px; color: #6b7083;">Gemini</div></div></a>
+      <a class="qa" href="ApiEmail.html"><div class="qi" style="background: rgba(15,118,110,.1);"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#0f766e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="4.5" width="15" height="11" rx="1.5"/><path d="M3 5.5 10 11l7-5.5"/></svg></div><div style="flex-grow: 1;"><div style="font-size: 14px; font-weight: 600;">Email Alerts<span class="tag">API 2</span></div><div style="font-size: 11.5px; color: #6b7083;">EmailJS</div></div></a>
+      <a class="qa" href="ApiPdf.html"><div class="qi" style="background: rgba(179,18,60,.08);"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#b3123c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h7l4 4v10H5z"/><path d="M10.5 9v5M8.5 12l2 2 2-2"/></svg></div><div style="flex-grow: 1;"><div style="font-size: 14px; font-weight: 600;">PDF Reports<span class="tag">API 3</span></div><div style="font-size: 11.5px; color: #6b7083;">PDFShift</div></div></a>
+    </div>
+
+    <div class="card" style="padding: 12px 14px; display: flex; flex-direction: column; gap: 8px;">
+      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600;">Recent activity</div>
+      <div style="font-size: 12.5px; display: flex; justify-content: space-between; gap: 8px;"><span>Email sent to Maria's guardian</span><span style="color: #9095a5; flex-shrink: 0;">2m</span></div>
+      <div style="font-size: 12.5px; display: flex; justify-content: space-between; gap: 8px;"><span>PDF made for Paolo Cruz</span><span style="color: #9095a5; flex-shrink: 0;">14m</span></div>
+      <div style="font-size: 12.5px; display: flex; justify-content: space-between; gap: 8px;"><span>Grade added for Ana Lim</span><span style="color: #9095a5; flex-shrink: 0;">1h</span></div>
+    </div>
+  </div>
+
+  <nav style="flex-shrink: 0; display: flex; background: #fff; border-top: 1px solid #e3e6ee; padding: 0 4px;">
+    <a class="tab" href="Main.html"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9.5 10 4l7 5.5V16a1 1 0 0 1-1 1h-3.5v-4.5h-5V17H4a1 1 0 0 1-1-1z"/></svg>Home</a>
+    <a class="tab on" href="MobileDashboard.html"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="6" height="6" rx="1"/><rect x="11" y="3" width="6" height="6" rx="1"/><rect x="3" y="11" width="6" height="6" rx="1"/><rect x="11" y="11" width="6" height="6" rx="1"/></svg>Dashboard</a>
+    <a class="tab" href="StaffAskAI.html"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3l1.6 4.4L16 9l-4.4 1.6L10 15l-1.6-4.4L4 9l4.4-1.6z"/></svg>AI</a>
+    <a class="tab" href="ApiEmail.html"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="4.5" width="15" height="11" rx="1.5"/><path d="M3 5.5 10 11l7-5.5"/></svg>Email</a>
+    <a class="tab" href="ApiPdf.html"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h7l4 4v10H5z"/><path d="M10.5 9v5M8.5 12l2 2 2-2"/></svg>PDF</a>
+  </nav>
+</div>
+</x-dc>
+
+</body>
+</html>

@@ -1,0 +1,7 @@
+.env
+node_modules/
+storage/reports/*
+!storage/reports/.gitkeep
+storage/logs/*
+!storage/logs/.gitkeep
+.claude/settings.local.json

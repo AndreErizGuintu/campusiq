@@ -1,0 +1,24 @@
+# CampusIQ: route every request through public/, block everything else.
+Options -Indexes
+DirectoryIndex index.php
+
+# Dotfiles (.env, .git, .htaccess ...) and project files are never served.
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>
+<FilesMatch "\.(md|json|lock|sh|sql|log|ini|yml|yaml)$">
+    Require all denied
+</FilesMatch>
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Private folders return 403.
+    RewriteRule ^(app|database|storage|design-ref|docs|resources|tests|node_modules|\.git|\.claude)(/|$) - [F,L]
+    RewriteRule (^|/)\. - [F,L]
+
+    # Everything else goes to public/.
+    RewriteRule ^$ public/ [L]
+    RewriteCond %{REQUEST_URI} !/public/
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>

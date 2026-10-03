@@ -1,0 +1,38 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(php:*)",
+      "Bash(/c/xampp/php/php.exe:*)",
+      "Bash(/c/xampp/mysql/bin/mysql.exe:*)",
+      "Bash(bash database/reset.sh)",
+      "Bash(npm:*)",
+      "Bash(npx:*)",
+      "Bash(git:*)",
+      "Bash(mkdir:*)",
+      "Bash(ls:*)",
+      "Bash(curl:*)",
+      "mcp__playwright",
+      "mcp__mysql",
+      "mcp__context7",
+      "WebFetch"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Bash(cat .env)",
+      "Bash(type .env)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "C:/xampp/php/php.exe \"$CLAUDE_PROJECT_DIR/.claude/hooks/php-lint.php\""
+          }
+        ]
+      }
+    ]
+  }
+}

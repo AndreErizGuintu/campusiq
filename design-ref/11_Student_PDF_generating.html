@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>PDF generating</title>
+<meta name="viewport" content="width=1440"><style>x-dc,helmet{display:contents} html,body{margin:0;width:1440px}</style>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+body{margin:0}
+.side{width:248px;flex-shrink:0;background:#fff;border-right:1px solid #e3e6ee;display:flex;flex-direction:column;padding:20px 14px;box-sizing:border-box;gap:2px}
+.brand{display:flex;align-items:center;gap:10px;padding:6px 10px 20px}
+.logo{width:30px;height:30px;border-radius:8px;background:#4338ca;color:#fff;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:13px}
+.navlabel{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:#9095a5;padding:14px 10px 6px;font-weight:600}
+.nav{display:flex;align-items:center;gap:11px;height:38px;padding:0 10px;border-radius:8px;font-size:13.5px;color:#454a5c;text-decoration:none}
+.nav.on{background:rgba(67,56,202,.09);color:#4338ca;font-weight:500}
+.top{height:64px;flex-shrink:0;background:#fff;border-bottom:1px solid #e3e6ee;display:flex;align-items:center;justify-content:space-between;padding:0 32px;box-sizing:border-box}
+.card{background:#fff;border:1px solid #e3e6ee;border-radius:12px}
+.skel{background:#eceef4;border-radius:6px;height:12px}
+.step{display:flex;align-items:center;gap:12px;font-size:13.5px}
+.dot{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.done{background:#0f766e;color:#fff}
+.todo{border:1.5px solid #d3d7e2}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spin{width:18px;height:18px;border:2px solid rgba(67,56,202,.2);border-top-color:#4338ca;border-radius:50%;animation:spin .9s linear infinite;box-sizing:border-box}
+@media (prefers-reduced-motion:reduce){.spin{animation:none}}
+</style>
+</helmet>
+
+<div style="width: 1440px; height: 900px; display: flex; background: #f5f6fa; font-family: 'IBM Plex Sans', sans-serif; color: #1b1e27; position: relative; overflow: hidden;">
+
+  <nav class="side">
+    <div class="brand"><div class="logo">CQ</div><div style="font-family: 'IBM Plex Mono', monospace; font-weight: 600; font-size: 15px;">CampusIQ</div></div>
+    <div class="navlabel">Student</div>
+    <a class="nav on" href="StudentRecord.html">My records</a>
+    <a class="nav" href="StudentPdfReady.html">Reports</a>
+    <a class="nav" href="StudentNotifications.html">Notifications</a>
+  </nav>
+
+  <div style="flex-grow: 1; display: flex; flex-direction: column; min-width: 0;">
+    <div class="top"><div style="font-size: 13px; color: #6b7083;">Home / My records</div><div style="width: 34px; height: 34px; border-radius: 50%; background: #e0e3ff;"></div></div>
+    <div style="padding: 28px 32px; display: flex; flex-direction: column; gap: 20px;">
+      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600;">My records</div>
+      <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px;">
+        <div class="card" style="height: 100px;"></div><div class="card" style="height: 100px;"></div><div class="card" style="height: 100px;"></div><div class="card" style="height: 100px;"></div>
+      </div>
+      <div class="card" style="height: 400px; padding: 24px; display: flex; flex-direction: column; gap: 22px; box-sizing: border-box;">
+        <div class="skel" style="width: 30%;"></div><div class="skel" style="width: 80%;"></div><div class="skel" style="width: 70%;"></div><div class="skel" style="width: 76%;"></div><div class="skel" style="width: 60%;"></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="position: absolute; left: 0; top: 0; width: 1440px; height: 900px; background: rgba(20,22,40,.45); display: flex; align-items: center; justify-content: center;">
+    <div role="dialog" aria-label="Generating PDF" style="width: 480px; background: #fff; border-radius: 16px; padding: 28px; box-sizing: border-box; display: flex; flex-direction: column; gap: 22px; box-shadow: 0 24px 60px rgba(20,22,40,.25);">
+      <div style="display: flex; gap: 16px; align-items: flex-start;">
+        <div style="width: 48px; height: 48px; border-radius: 12px; background: rgba(67,56,202,.1); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+          <svg width="24" height="24" viewBox="0 0 20 20" fill="none" stroke="#4338ca" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h7l4 4v10H5z"/><path d="M12 3v4h4"/></svg>
+        </div>
+        <div>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 17px; font-weight: 600;">Generating your PDF&hellip;</div>
+          <div style="font-size: 13px; color: #6b7083; margin-top: 4px; line-height: 1.5;">Your record is being turned into a PDF by PDFShift. This usually takes a few seconds.</div>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <div style="height: 8px; background: #eceef4; border-radius: 999px; overflow: hidden;"><div style="width: 68%; height: 8px; background: #4338ca; border-radius: 999px;"></div></div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: #6b7083;"><span>Step 3 of 4</span><span>68%</span></div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 14px;">
+        <div class="step"><div class="dot done"><svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 10.5 8.5 14 15 6.5"/></svg></div><div>Pulled your records from the database</div></div>
+        <div class="step"><div class="dot done"><svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 10.5 8.5 14 15 6.5"/></svg></div><div>Laid them out as a report page</div></div>
+        <div class="step" style="font-weight: 500; color: #4338ca;"><div class="dot"><div class="spin"></div></div><div>Converting to PDF with PDFShift</div></div>
+        <div class="step" style="color: #9095a5;"><div class="dot todo"></div><div>Ready to download</div></div>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 6px; border-top: 1px solid #eef0f5;">
+        <a href="StudentRecord.html" style="font-size: 13px; color: #6b7083; text-decoration: none; padding-top: 14px;">Cancel</a>
+        <a href="StudentPdfReady.html" style="font-size: 13px; color: #4338ca; text-decoration: none; font-weight: 500; padding-top: 14px;">Skip to result &rarr;</a>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>AI Assistant (API 1)</title>
+<meta name="viewport" content="width=1440"><style>x-dc,helmet{display:contents} html,body{margin:0;width:1440px}</style>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+body{margin:0}
+.side{width:248px;flex-shrink:0;background:#15172a;display:flex;flex-direction:column;padding:20px 14px;box-sizing:border-box;gap:2px}
+.brand{display:flex;align-items:center;gap:10px;padding:6px 10px 20px;color:#fff}
+.logo{width:30px;height:30px;border-radius:8px;background:#6366f1;color:#fff;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:13px}
+.navlabel{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:#6b7089;padding:14px 10px 6px;font-weight:600}
+.nav{display:flex;align-items:center;gap:11px;height:38px;padding:0 10px;border-radius:8px;font-size:13.5px;color:#b4b8cc;text-decoration:none}
+.nav:hover{background:rgba(255,255,255,.05)}
+.nav.on{background:rgba(129,140,248,.16);color:#fff;font-weight:500}
+.api{margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;color:#8f94ad;border:1px solid rgba(255,255,255,.14);border-radius:5px;padding:1px 5px}
+.top{height:64px;flex-shrink:0;background:#fff;border-bottom:1px solid #e3e6ee;display:flex;align-items:center;justify-content:space-between;padding:0 32px;box-sizing:border-box}
+.avatar{width:34px;height:34px;border-radius:50%;background:#fde7d6;color:#9a4a08;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:12.5px}
+.me{align-self:flex-end;max-width:520px;background:#4338ca;color:#fff;padding:12px 16px;border-radius:14px 14px 4px 14px;font-size:14px;line-height:1.5}
+.ai{display:flex;gap:12px;align-items:flex-start;max-width:720px}
+.aiav{width:32px;height:32px;border-radius:9px;background:rgba(67,56,202,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.aibody{background:#fff;border:1px solid #e3e6ee;padding:14px 18px;border-radius:4px 14px 14px 14px;font-size:14px;line-height:1.6;display:flex;flex-direction:column;gap:10px}
+.mt{display:grid;grid-template-columns:1fr 90px 120px;font-size:13px;padding:8px 0;border-bottom:1px solid #eef0f5}
+.src{font-size:11.5px;color:#9095a5}
+.sug{height:34px;padding:0 14px;border-radius:999px;border:1px solid #d6d8f5;background:#fff;color:#4338ca;font-size:12.5px;display:inline-flex;align-items:center;font-family:'IBM Plex Sans',sans-serif;cursor:pointer}
+</style>
+</helmet>
+
+<div style="width: 1440px; height: 900px; display: flex; background: #f5f6fa; font-family: 'IBM Plex Sans', sans-serif; color: #1b1e27;">
+
+  <nav class="side">
+    <div class="brand"><div class="logo">CQ</div><div style="font-family: 'IBM Plex Mono', monospace; font-weight: 600; font-size: 15px;">CampusIQ</div></div>
+    <div class="navlabel">Main</div>
+    <a class="nav" href="Main.html"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9.5 10 4l7 5.5V16a1 1 0 0 1-1 1h-3.5v-4.5h-5V17H4a1 1 0 0 1-1-1z"/></svg>Home</a>
+    <a class="nav" href="StaffDashboard.html"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="6" height="6" rx="1"/><rect x="11" y="3" width="6" height="6" rx="1"/><rect x="3" y="11" width="6" height="6" rx="1"/><rect x="11" y="11" width="6" height="6" rx="1"/></svg>Dashboard</a>
+    <a class="nav" href="StaffRecordDetail.html"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="7" r="3"/><path d="M2.5 17c.6-3 2.8-4.5 5.5-4.5s4.9 1.5 5.5 4.5M13 4.2a3 3 0 0 1 0 5.6M15 12.8c1.4.6 2.3 2 2.6 4.2"/></svg>Students &amp; records</a>
+    <div class="navlabel">APIs</div>
+    <a class="nav on" href="StaffAskAI.html"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3l1.6 4.4L16 9l-4.4 1.6L10 15l-1.6-4.4L4 9l4.4-1.6z"/></svg>AI Assistant<span class="api">API 1</span></a>
+    <a class="nav" href="ApiEmail.html"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="4.5" width="15" height="11" rx="1.5"/><path d="M3 5.5 10 11l7-5.5"/></svg>Email Alerts<span class="api">API 2</span></a>
+    <a class="nav" href="ApiPdf.html"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h7l4 4v10H5z"/><path d="M10.5 9v5M8.5 12l2 2 2-2"/></svg>PDF Reports<span class="api">API 3</span></a>
+    <div style="flex-grow: 1;"></div>
+    <a class="nav" href="Main.html"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 4H4v12h4M12 7l3 3-3 3M15 10H8"/></svg>Log out</a>
+  </nav>
+
+  <div style="flex-grow: 1; display: flex; flex-direction: column; min-width: 0;">
+    <div class="top">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <h1 style="margin: 0; font-family: 'IBM Plex Mono', monospace; font-size: 17px; font-weight: 600;">AI Assistant</h1>
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #4338ca; background: rgba(67,56,202,.09); padding: 3px 9px; border-radius: 6px; font-weight: 600;">API 1 &middot; Gemini</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <div style="text-align: right;"><div style="font-size: 13px; font-weight: 500;">Ms. Santos</div><div style="font-size: 11.5px; color: #6b7083;">Class Adviser &middot; 10-A</div></div>
+        <div class="avatar">MS</div>
+      </div>
+    </div>
+
+    <div style="flex-grow: 1; display: flex; flex-direction: column; min-height: 0;">
+      <div style="flex-grow: 1; padding: 20px 48px 8px; display: flex; flex-direction: column; gap: 14px; overflow: hidden; box-sizing: border-box;">
+        <div style="align-self: center; font-size: 11.5px; color: #9095a5; background: #eceef4; padding: 4px 12px; border-radius: 999px;">Example conversation &middot; answers come from Grade 10-A's records</div>
+
+        <div class="me">Who's been absent or late more than twice this week?</div>
+
+        <div class="ai">
+          <div class="aiav"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="#4338ca" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3l1.6 4.4L16 9l-4.4 1.6L10 15l-1.6-4.4L4 9l4.4-1.6z"/></svg></div>
+          <div class="aibody" style="width: 560px;">
+            <div>Three students were absent or late more than twice this week:</div>
+            <div>
+              <div class="mt" style="font-size: 11px; color: #9095a5; font-weight: 600; text-transform: uppercase; letter-spacing: .05em;"><div>Student</div><div>Times</div><div>Pattern</div></div>
+              <div class="mt"><div>Maria Reyes</div><div>3 absent</div><div style="color: #6b7083;">Mon, Tue, Thu</div></div>
+              <div class="mt"><div>Paolo Cruz</div><div>2 late, 1 absent</div><div style="color: #6b7083;">mornings</div></div>
+              <div class="mt" style="border-bottom: none;"><div>Ana Lim</div><div>3 late</div><div style="color: #6b7083;">all after 7:45</div></div>
+            </div>
+            <div>Maria's guardian was already emailed for each absence.</div>
+            <div class="src">Based on 186 attendance records, Sept 22 to 26</div>
+          </div>
+        </div>
+
+        <div class="me">Summarize Juan Dela Cruz's record for this quarter</div>
+
+        <div class="ai">
+          <div class="aiav"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="#4338ca" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3l1.6 4.4L16 9l-4.4 1.6L10 15l-1.6-4.4L4 9l4.4-1.6z"/></svg></div>
+          <div class="aibody" style="width: 560px;">
+            <div>Juan is doing well this quarter. Attendance is 96% with one late arrival on Sept 15 and no absences. His only posted grade so far is a 95 in Quarter 1 Math. He has one library book out, "Noli Me Tangere", due Oct 2.</div>
+            <div style="display: flex; gap: 8px;">
+              <a href="ApiPdf.html" style="height: 32px; padding: 0 12px; border-radius: 8px; border: 1px solid #e3e6ee; color: #1b1e27; font-size: 12.5px; display: inline-flex; align-items: center; gap: 6px; text-decoration: none;"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h7l4 4v10H5z"/><path d="M10.5 9v5M8.5 12l2 2 2-2"/></svg>Make this a PDF</a>
+              <a href="StaffRecordDetail.html" style="height: 32px; padding: 0 12px; border-radius: 8px; border: 1px solid #e3e6ee; color: #1b1e27; font-size: 12.5px; display: inline-flex; align-items: center; text-decoration: none;">Open Juan's record</a>
+            </div>
+            <div class="src">Based on 14 records for student 10-24031</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="padding: 12px 48px 22px; background: #f5f6fa; border-top: 1px solid #e3e6ee; display: flex; flex-direction: column; gap: 12px;">
+        <div style="display: flex; gap: 8px;">
+          <button class="sug">Which books are overdue?</button>
+          <button class="sug">Who's at risk in Math?</button>
+          <button class="sug">Summarize attendance this month</button>
+        </div>
+        <div style="display: flex; gap: 10px; background: #fff; border: 1px solid #d6d8f5; border-radius: 12px; padding: 8px 8px 8px 16px; align-items: center; box-shadow: 0 4px 14px rgba(67,56,202,.06);">
+          <label for="ask" style="position: absolute; width: 1px; height: 1px; overflow: hidden;">Ask a question</label>
+          <input id="ask" type="text" placeholder="Ask about any student, section, or record&hellip;" style="flex-grow: 1; border: none; outline: none; font-size: 14px; font-family: 'IBM Plex Sans', sans-serif; height: 36px; background: transparent;">
+          <button aria-label="Send" style="width: 40px; height: 40px; border-radius: 9px; background: #4338ca; border: none; display: flex; align-items: center; justify-content: center; cursor: pointer;"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10h11M11 5l5 5-5 5"/></svg></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+
+</body>
+</html>

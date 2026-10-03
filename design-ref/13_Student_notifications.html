@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Student notifications</title>
+<meta name="viewport" content="width=1440"><style>x-dc,helmet{display:contents} html,body{margin:0;width:1440px}</style>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+body{margin:0}
+.side{width:248px;flex-shrink:0;background:#fff;border-right:1px solid #e3e6ee;display:flex;flex-direction:column;padding:20px 14px;box-sizing:border-box;gap:2px}
+.brand{display:flex;align-items:center;gap:10px;padding:6px 10px 20px}
+.logo{width:30px;height:30px;border-radius:8px;background:#4338ca;color:#fff;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:13px}
+.navlabel{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:#9095a5;padding:14px 10px 6px;font-weight:600}
+.nav{display:flex;align-items:center;gap:11px;height:38px;padding:0 10px;border-radius:8px;font-size:13.5px;color:#454a5c;text-decoration:none}
+.nav:hover{background:#f3f4f8}
+.nav.on{background:rgba(67,56,202,.09);color:#4338ca;font-weight:500}
+.top{height:64px;flex-shrink:0;background:#fff;border-bottom:1px solid #e3e6ee;display:flex;align-items:center;justify-content:space-between;padding:0 32px;box-sizing:border-box}
+.avatar{width:34px;height:34px;border-radius:50%;background:#e0e3ff;color:#4338ca;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:12.5px}
+.card{background:#fff;border:1px solid #e3e6ee;border-radius:12px}
+.mail{display:flex;gap:12px;padding:16px 18px;border-bottom:1px solid #eef0f5}
+.mail.sel{background:rgba(67,56,202,.05);box-shadow:inset 3px 0 0 #4338ca}
+.unread{width:8px;height:8px;border-radius:50%;background:#4338ca;flex-shrink:0;margin-top:6px}
+.read{width:8px;height:8px;flex-shrink:0}
+.subj{font-size:13.5px;font-weight:500}
+.prev{font-size:12.5px;color:#6b7083;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.time{font-size:11.5px;color:#9095a5;flex-shrink:0}
+</style>
+</helmet>
+
+<div style="width: 1440px; height: 900px; display: flex; background: #f5f6fa; font-family: 'IBM Plex Sans', sans-serif; color: #1b1e27;">
+
+  <nav class="side">
+    <div class="brand"><div class="logo">CQ</div><div style="font-family: 'IBM Plex Mono', monospace; font-weight: 600; font-size: 15px;">CampusIQ</div></div>
+    <div class="navlabel">Student</div>
+    <a class="nav" href="StudentRecord.html"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h7l4 4v10H5z"/><path d="M12 3v4h4M8 11h5M8 14h5"/></svg>My records</a>
+    <a class="nav" href="StudentPdfReady.html"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h7l4 4v10H5z"/><path d="M10.5 9v5M8.5 12l2 2 2-2"/></svg>Reports</a>
+    <a class="nav on" href="StudentNotifications.html"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="4.5" width="15" height="11" rx="1.5"/><path d="M3 5.5 10 11l7-5.5"/></svg>Notifications</a>
+    <div style="flex-grow: 1;"></div>
+    <a class="nav" href="Main.html"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 4H4v12h4M12 7l3 3-3 3M15 10H8"/></svg>Log out</a>
+  </nav>
+
+  <div style="flex-grow: 1; display: flex; flex-direction: column; min-width: 0;">
+    <div class="top">
+      <div style="font-size: 13px; color: #6b7083;">Home <span style="color: #c3c7d4;">/</span> <span style="color: #1b1e27; font-weight: 500;">Notifications</span></div>
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <div style="text-align: right;"><div style="font-size: 13px; font-weight: 500;">Juan Dela Cruz</div><div style="font-size: 11.5px; color: #6b7083;">Grade 10-A &middot; 10-24031</div></div>
+        <div class="avatar">JD</div>
+      </div>
+    </div>
+
+    <div style="padding: 28px 32px; display: flex; flex-direction: column; gap: 20px; flex-grow: 1; box-sizing: border-box; min-height: 0;">
+      <div>
+        <h1 style="margin: 0; font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600;">Notifications</h1>
+        <div style="font-size: 13px; color: #6b7083; margin-top: 4px;">Every email CampusIQ sent you. They go out on their own when staff change your record.</div>
+      </div>
+
+      <div style="display: flex; gap: 20px; flex-grow: 1; min-height: 0;">
+        <div class="card" style="width: 440px; flex-shrink: 0; overflow: hidden;">
+          <div class="mail sel"><div class="unread"></div><div style="flex-grow: 1; min-width: 0;"><div style="display: flex; justify-content: space-between; gap: 10px;"><div class="subj">New grade posted: Quarter 1 Math</div><div class="time">Sept 20</div></div><div class="prev">Hi Juan, a new grade was added to your record by Mr. Garcia&hellip;</div></div></div>
+          <div class="mail"><div class="unread"></div><div style="flex-grow: 1; min-width: 0;"><div style="display: flex; justify-content: space-between; gap: 10px;"><div class="subj">Library: book borrowed</div><div class="time">Sept 19</div></div><div class="prev">You borrowed "Noli Me Tangere". It's due back on Oct 2&hellip;</div></div></div>
+          <div class="mail"><div class="read"></div><div style="flex-grow: 1; min-width: 0;"><div style="display: flex; justify-content: space-between; gap: 10px;"><div class="subj">Library: book returned</div><div class="time">Sept 18</div></div><div class="prev">Thanks for returning "Intro to Algorithms" on time&hellip;</div></div></div>
+          <div class="mail"><div class="read"></div><div style="flex-grow: 1; min-width: 0;"><div style="display: flex; justify-content: space-between; gap: 10px;"><div class="subj">Attendance: marked late</div><div class="time">Sept 15</div></div><div class="prev">You were marked late at 7:48 AM by Ms. Santos&hellip;</div></div></div>
+          <div class="mail" style="border-bottom: none;"><div class="read"></div><div style="flex-grow: 1; min-width: 0;"><div style="display: flex; justify-content: space-between; gap: 10px;"><div class="subj">Welcome to CampusIQ</div><div class="time">Aug 12</div></div><div class="prev">Your account is set up. You'll get emails here whenever&hellip;</div></div></div>
+        </div>
+
+        <div class="card" style="flex-grow: 1; padding: 28px 32px; display: flex; flex-direction: column; gap: 18px; box-sizing: border-box;">
+          <div style="display: flex; align-items: center; justify-content: space-between;">
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 17px; font-weight: 600;">New grade posted: Quarter 1 Math</div>
+            <span style="display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 10px; border-radius: 999px; background: rgba(15,118,110,.1); color: #0f766e; font-size: 12px; font-weight: 500;"><svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 10.5 8.5 14 15 6.5"/></svg>Delivered</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 60px 1fr; row-gap: 6px; font-size: 12.5px; padding-bottom: 16px; border-bottom: 1px solid #eef0f5;">
+            <div style="color: #9095a5;">From</div><div>CampusIQ &lt;no-reply@campusiq.hcc.edu.ph&gt;</div>
+            <div style="color: #9095a5;">To</div><div>juan.delacruz@hcc.edu.ph, guardian</div>
+            <div style="color: #9095a5;">Sent</div><div>Sept 20, 2026 &middot; 3:12 PM</div>
+          </div>
+          <div style="font-size: 14px; line-height: 1.7; color: #2b2f3e; max-width: 560px;">
+            <p style="margin: 0 0 12px;">Hi Juan,</p>
+            <p style="margin: 0 0 12px;">A new grade was added to your record.</p>
+            <div style="border: 1px solid #e3e6ee; border-radius: 10px; padding: 14px 16px; margin: 0 0 12px; display: grid; grid-template-columns: 110px 1fr; row-gap: 6px; font-size: 13px;">
+              <div style="color: #6b7083;">Subject</div><div>Math</div>
+              <div style="color: #6b7083;">Period</div><div>Quarter 1</div>
+              <div style="color: #6b7083;">Grade</div><div style="font-weight: 600;">95</div>
+              <div style="color: #6b7083;">Recorded by</div><div>Mr. Garcia</div>
+            </div>
+            <p style="margin: 0;">You can see your full record anytime by logging in to CampusIQ.</p>
+          </div>
+          <div style="flex-grow: 1;"></div>
+          <div style="font-size: 11.5px; color: #9095a5; display: flex; align-items: center; gap: 6px;"><svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 3 5 11h5l-1 6 6-8h-5z"/></svg>Sent automatically through EmailJS when the grade was saved</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+
+</body>
+</html>

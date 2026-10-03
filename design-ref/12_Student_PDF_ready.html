@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>PDF ready</title>
+<meta name="viewport" content="width=1440"><style>x-dc,helmet{display:contents} html,body{margin:0;width:1440px}</style>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+body{margin:0}
+.side{width:248px;flex-shrink:0;background:#fff;border-right:1px solid #e3e6ee;display:flex;flex-direction:column;padding:20px 14px;box-sizing:border-box;gap:2px}
+.brand{display:flex;align-items:center;gap:10px;padding:6px 10px 20px}
+.logo{width:30px;height:30px;border-radius:8px;background:#4338ca;color:#fff;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:13px}
+.navlabel{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:#9095a5;padding:14px 10px 6px;font-weight:600}
+.nav{display:flex;align-items:center;gap:11px;height:38px;padding:0 10px;border-radius:8px;font-size:13.5px;color:#454a5c;text-decoration:none}
+.nav.on{background:rgba(67,56,202,.09);color:#4338ca;font-weight:500}
+.top{height:64px;flex-shrink:0;background:#fff;border-bottom:1px solid #e3e6ee;display:flex;align-items:center;justify-content:space-between;padding:0 32px;box-sizing:border-box}
+.card{background:#fff;border:1px solid #e3e6ee;border-radius:12px}
+.prow{display:grid;grid-template-columns:70px 1fr 70px;font-size:8.5px;padding:5px 0;border-bottom:1px solid #eef0f5;color:#454a5c}
+</style>
+</helmet>
+
+<div style="width: 1440px; height: 900px; display: flex; background: #f5f6fa; font-family: 'IBM Plex Sans', sans-serif; color: #1b1e27; position: relative; overflow: hidden;">
+
+  <nav class="side">
+    <div class="brand"><div class="logo">CQ</div><div style="font-family: 'IBM Plex Mono', monospace; font-weight: 600; font-size: 15px;">CampusIQ</div></div>
+    <div class="navlabel">Student</div>
+    <a class="nav" href="StudentRecord.html">My records</a>
+    <a class="nav on" href="StudentPdfReady.html">Reports</a>
+    <a class="nav" href="StudentNotifications.html">Notifications</a>
+  </nav>
+
+  <div style="flex-grow: 1; display: flex; flex-direction: column; min-width: 0;">
+    <div class="top"><div style="font-size: 13px; color: #6b7083;">Home / My records</div><div style="width: 34px; height: 34px; border-radius: 50%; background: #e0e3ff;"></div></div>
+    <div style="padding: 28px 32px; display: flex; flex-direction: column; gap: 20px;">
+      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600;">My records</div>
+      <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px;">
+        <div class="card" style="height: 100px;"></div><div class="card" style="height: 100px;"></div><div class="card" style="height: 100px;"></div><div class="card" style="height: 100px;"></div>
+      </div>
+      <div class="card" style="height: 400px;"></div>
+    </div>
+  </div>
+
+  <div style="position: absolute; left: 0; top: 0; width: 1440px; height: 900px; background: rgba(20,22,40,.45); display: flex; align-items: center; justify-content: center;">
+    <div role="dialog" aria-label="PDF ready" style="width: 640px; background: #fff; border-radius: 16px; padding: 28px; box-sizing: border-box; display: flex; gap: 28px; box-shadow: 0 24px 60px rgba(20,22,40,.25);">
+
+      <div style="width: 210px; height: 297px; flex-shrink: 0; background: #fff; border: 1px solid #e3e6ee; border-radius: 4px; box-shadow: 0 6px 18px rgba(20,22,40,.10); padding: 16px 14px; box-sizing: border-box; display: flex; flex-direction: column; gap: 8px;">
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 600; color: #4338ca;">CampusIQ</div>
+          <div style="font-size: 7px; color: #9095a5;">Sept 28, 2026</div>
+        </div>
+        <div style="height: 2px; background: #4338ca;"></div>
+        <div style="font-size: 11px; font-weight: 600; margin-top: 2px;">Student Record</div>
+        <div style="font-size: 8px; color: #6b7083; line-height: 1.5;">Juan Dela Cruz<br>ID 10-24031 &middot; Grade 10-A</div>
+        <div style="margin-top: 4px;">
+          <div class="prow" style="font-weight: 600; color: #9095a5;"><div>Type</div><div>Detail</div><div>Date</div></div>
+          <div class="prow"><div>Attendance</div><div>Present</div><div>Sept 25</div></div>
+          <div class="prow"><div>Grade</div><div>Q1 Math &mdash; 95</div><div>Sept 20</div></div>
+          <div class="prow"><div>Library</div><div>Borrowed</div><div>Sept 19</div></div>
+          <div class="prow"><div>Library</div><div>Returned</div><div>Sept 18</div></div>
+          <div class="prow"><div>Attendance</div><div>Late</div><div>Sept 15</div></div>
+        </div>
+        <div style="flex-grow: 1;"></div>
+        <div style="font-size: 6.5px; color: #9095a5;">Generated by CampusIQ &middot; page 1 of 1</div>
+      </div>
+
+      <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 18px;">
+        <div style="width: 44px; height: 44px; border-radius: 50%; background: rgba(15,118,110,.12); display: flex; align-items: center; justify-content: center;">
+          <svg width="22" height="22" viewBox="0 0 20 20" fill="none" stroke="#0f766e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 10.5 8.5 14 15 6.5"/></svg>
+        </div>
+        <div>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600;">Your PDF is ready</div>
+          <div style="font-size: 13px; color: #6b7083; margin-top: 6px; line-height: 1.5;">Made just now from your current records, so it matches what's on screen.</div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px; padding: 12px 14px; border: 1px solid #e3e6ee; border-radius: 10px;">
+          <div style="width: 34px; height: 40px; border-radius: 4px; background: #b3123c; color: #fff; font-size: 9px; font-weight: 600; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 5px; box-sizing: border-box;">PDF</div>
+          <div style="min-width: 0;"><div style="font-size: 13px; font-weight: 500;">JuanDelaCruz_Record.pdf</div><div style="font-size: 12px; color: #6b7083;">1 page &middot; 84 KB</div></div>
+        </div>
+        <div style="flex-grow: 1;"></div>
+        <div style="display: flex; gap: 10px;">
+          <button style="height: 42px; padding: 0 20px; border-radius: 8px; background: #4338ca; color: #fff; border: none; font-size: 13.5px; font-weight: 500; font-family: 'IBM Plex Sans', sans-serif; display: inline-flex; align-items: center; gap: 8px; cursor: pointer;"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3v10M6 9l4 4 4-4M4 16h12"/></svg>Download</button>
+          <a href="StudentRecord.html" style="height: 42px; padding: 0 18px; border-radius: 8px; border: 1px solid #e3e6ee; color: #454a5c; font-size: 13.5px; display: inline-flex; align-items: center; text-decoration: none; box-sizing: border-box;">Close</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+
+</body>
+</html>

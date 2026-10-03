@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Log in</title>
+<meta name="viewport" content="width=1440"><style>x-dc,helmet{display:contents} html,body{margin:0;width:1440px}</style>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+body{margin:0}
+.dots{background-image:radial-gradient(rgba(255,255,255,.09) 1px, transparent 1px);background-size:22px 22px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:12.5px;color:#5b6072;font-weight:500}
+.field input{height:44px;border:1px solid #dde1ea;border-radius:8px;padding:0 14px;font-size:14px;color:#1b1e27;box-sizing:border-box;font-family:'IBM Plex Sans',sans-serif;background:#fff}
+.tab{height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;text-decoration:none;color:#5b6072}
+.tab.on{background:#fff;color:#1b1e27;font-weight:500;box-shadow:0 1px 2px rgba(20,22,40,.08)}
+</style>
+</helmet>
+
+<div style="width: 1440px; height: 900px; display: flex; background: #f5f6fa; font-family: 'IBM Plex Sans', sans-serif; color: #1b1e27;">
+
+  <div class="dots" style="width: 560px; flex-shrink: 0; background-color: #2f2a8f; color: #fff; padding: 56px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between;">
+    <a href="Main.html" style="display: flex; align-items: center; gap: 12px; color: #fff; text-decoration: none;">
+      <div style="width: 36px; height: 36px; border-radius: 9px; background: #fff; color: #2f2a8f; display: flex; align-items: center; justify-content: center; font-family: 'IBM Plex Mono', monospace; font-weight: 600; font-size: 15px;">CQ</div>
+      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 20px; font-weight: 600;">CampusIQ</div>
+    </a>
+    <div style="display: flex; flex-direction: column; gap: 18px;">
+      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 30px; line-height: 1.25; font-weight: 600;">Your records, your questions, your reports.</div>
+      <div style="font-size: 14.5px; color: rgba(255,255,255,.75); line-height: 1.6; max-width: 400px;">Log in to reach the dashboard and the three tools: AI Assistant, Email Alerts and PDF Reports.</div>
+    </div>
+    <a href="Main.html" style="font-size: 13px; color: rgba(255,255,255,.7); text-decoration: none;">&larr; Back to home</a>
+  </div>
+
+  <div style="flex-grow: 1; display: flex; align-items: center; justify-content: center;">
+    <div style="width: 400px; display: flex; flex-direction: column; gap: 24px;">
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); background: #e9ebf2; border-radius: 10px; padding: 4px; gap: 4px;">
+        <a class="tab on" href="Login.html">Log in</a>
+        <a class="tab" href="Login.html">Sign up</a>
+      </div>
+
+      <div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 24px; font-weight: 600; margin-bottom: 6px;">Welcome back</div>
+        <div style="font-size: 13.5px; color: #5b6072;">Use the ID your school gave you.</div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 14px;">
+        <div class="field"><label for="uid">ID number</label><input id="uid" type="text" value="T-0012"></div>
+        <div class="field"><label for="pw">Password</label><input id="pw" type="password" value="password123"></div>
+        <div style="display: flex; justify-content: space-between; align-items: center; font-size: 12.5px;">
+          <label style="display: flex; align-items: center; gap: 8px; color: #5b6072;"><input type="checkbox" checked style="accent-color: #4338ca;">Remember me</label>
+          <a href="Login.html" style="color: #4338ca; text-decoration: none;">Forgot password?</a>
+        </div>
+      </div>
+
+      <a href="StaffDashboard.html" style="display: block; text-align: center; height: 46px; line-height: 46px; background: #4338ca; color: #ffffff; border-radius: 8px; font-size: 14px; font-weight: 500; text-decoration: none;">Log in</a>
+
+      <div style="display: flex; align-items: center; gap: 12px; font-size: 12px; color: #9095a5;"><div style="flex-grow: 1; height: 1px; background: #e3e6ee;"></div>demo shortcuts<div style="flex-grow: 1; height: 1px; background: #e3e6ee;"></div></div>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px;">
+        <a href="StaffDashboard.html" style="height: 40px; border-radius: 8px; border: 1px solid #e3e6ee; background: #fff; color: #1b1e27; font-size: 13px; display: flex; align-items: center; justify-content: center; text-decoration: none;">Enter as staff</a>
+        <a href="StudentRecord.html" style="height: 40px; border-radius: 8px; border: 1px solid #e3e6ee; background: #fff; color: #1b1e27; font-size: 13px; display: flex; align-items: center; justify-content: center; text-decoration: none;">Enter as student</a>
+      </div>
+      <div style="font-size: 13px; color: #5b6072; text-align: center;">No account yet? <a href="Login.html" style="color: #4338ca; text-decoration: none; font-weight: 500;">Sign up</a></div>
+    </div>
+  </div>
+</div>
+</x-dc>
+
+</body>
+</html>
