@@ -5,3 +5,4 @@ storage/reports/*
 storage/logs/*
 !storage/logs/.gitkeep
 .claude/settings.local.json
+.playwright-mcp/

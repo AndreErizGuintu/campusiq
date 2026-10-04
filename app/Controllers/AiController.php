@@ -77,7 +77,15 @@ class AiController extends Controller
         if (!$table) {
             return '';
         }
-        $lines = array_map(static fn ($row) => '• ' . implode(' · ', $row), $table['rows']);
+        // "• Ana Lim · Late: 3 · Absent: 0" so the history keeps the column names.
+        $columns = $table['columns'];
+        $lines = array_map(static function ($row) use ($columns) {
+            $cells = [array_shift($row)];
+            foreach ($row as $i => $cell) {
+                $cells[] = ($columns[$i + 1] ?? '') !== '' ? $columns[$i + 1] . ': ' . $cell : $cell;
+            }
+            return '• ' . implode(' · ', $cells);
+        }, $table['rows']);
 
         return "\n" . implode("\n", $lines);
     }

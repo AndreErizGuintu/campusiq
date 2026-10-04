@@ -6,9 +6,8 @@
  * Usage: php tests/smoke.php
  */
 
-require dirname(__DIR__) . '/app/Core/Env.php';
-
-App\Core\Env::load(dirname(__DIR__) . '/.env');
+// Full bootstrap so the test can create (and remove) fixture rows. It never prints .env values.
+require dirname(__DIR__) . '/app/bootstrap.php';
 
 $base = rtrim(App\Core\Env::get('APP_URL', 'http://localhost/campusiq'), '/');
 $failures = 0;
@@ -135,18 +134,30 @@ foreach ($portalPages as $path) {
     check("GET {$path} (portal only)", fetch($base . $path, 'staff'), [403]);
 }
 
-// Generate one report for Juan (student 1) and one for Maria (student 2) to test download ownership.
+// The smoke test never calls a paid API: /api/reports is checked on validation only (no PDFShift call),
+// and download ownership uses two temporary fixture reports (Juan = student 1, Maria = student 2), removed at the end.
 $staffPage = fetch("{$base}/reports", 'staff');
+preg_match('/name="csrf-token" content="([^"]+)"/', $staffPage['body'], $m);
+$noSections = fetch("{$base}/api/reports", 'staff', 'POST', ['_csrf' => $m[1] ?? '', 'student_id' => 1, 'report_type' => 'full']);
+check('POST /api/reports without sections (422, no API call)', $noSections, [422]);
+
 $reportIds = [];
+$fixtureFiles = [];
 foreach ([1, 2] as $sid) {
-    $response = fetch("{$base}/api/reports", 'staff', 'POST', [
-        '_csrf' => csrfFrom($staffPage['body']) ?: (preg_match('/name="csrf-token" content="([^"]+)"/', $staffPage['body'], $m) ? $m[1] : ''),
-        'student_id' => $sid, 'report_type' => 'full', 'date_from' => '', 'date_to' => '',
-        'sections' => ['grades', 'attendance', 'library'],
+    $relative = 'reports/smoke-' . bin2hex(random_bytes(4)) . '.html';
+    file_put_contents(BASE_PATH . '/storage/' . $relative, '<!doctype html><html><body><h1>Smoke fixture</h1></body></html>');
+    $fixtureFiles[] = BASE_PATH . '/storage/' . $relative;
+    $reportIds[$sid] = App\Models\Report::create([
+        'student_id' => $sid, 'report_type' => 'full', 'sections' => 'grades,attendance,library',
+        'file_path' => $relative, 'size_bytes' => filesize(end($fixtureFiles)), 'mode' => 'demo', 'created_by' => 1,
     ]);
-    check("POST /api/reports (student {$sid})", $response, [200]);
-    $reportIds[$sid] = (int) (json_decode($response['body'], true)['report']['id'] ?? 0);
 }
+register_shutdown_function(static function () use ($reportIds, $fixtureFiles): void {
+    foreach ($reportIds as $id) {
+        App\Models\Report::delete($id);
+    }
+    array_map('unlink', array_filter($fixtureFiles, 'is_file'));
+});
 check('GET /reports/{juan}/download', fetch("{$base}/reports/{$reportIds[1]}/download", 'staff'), [200]);
 check('GET /reports/{juan}/preview', fetch("{$base}/reports/{$reportIds[1]}/preview", 'staff'), [200]);
 check('GET /reports/9999/download (missing)', fetch("{$base}/reports/9999/download", 'staff'), [404]);

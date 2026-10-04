@@ -20,14 +20,21 @@ class GeminiService
 {
     private const ENDPOINT = 'https://generativelanguage.googleapis.com/v1beta/models/%s:generateContent';
     private const MAX_ROWS = 400;
+    private const DEFAULT_MODEL = 'gemini-3.8-flash';
+    private const MAX_TRIES = 3;
+    /** Busy / rate-limited answers worth retrying with backoff. */
+    private const RETRY_STATUSES = [429, 500, 503, 504];
 
     private ?string $apiKey;
     private string $model;
+    private ?string $thinkingLevel;
 
     public function __construct()
     {
         $this->apiKey = Env::get('GEMINI_API_KEY');
-        $this->model = Env::get('GEMINI_MODEL', 'gemini-2.5-flash');
+        $this->model = Env::get('GEMINI_MODEL', self::DEFAULT_MODEL);
+        // Gemini 3 thinking depth: minimal | low | medium | high. Empty = the model's own default.
+        $this->thinkingLevel = Env::get('GEMINI_THINKING_LEVEL', 'low');
     }
 
     public function isLive(): bool
@@ -199,7 +206,7 @@ class GeminiService
             'contents' => [['role' => 'user', 'parts' => [['text' => $prompt]]]],
             'generationConfig' => [
                 'temperature' => 0.2,
-                'maxOutputTokens' => 1024,
+                'maxOutputTokens' => 2048,
                 'responseMimeType' => 'application/json',
                 'responseSchema' => [
                     'type' => 'OBJECT',
@@ -219,23 +226,29 @@ class GeminiService
                 ],
             ],
         ];
-        // 2.5 Flash thinks by default; a budget of 0 turns it off so answers come back fast.
-        if (str_starts_with($this->model, 'gemini-2.5-flash')) {
-            $payload['generationConfig']['thinkingConfig'] = ['thinkingBudget' => 0];
+        // Gemini 3 models default to medium/high thinking; a lower level keeps answers fast and cheap.
+        if ($this->thinkingLevel !== null) {
+            $payload['generationConfig']['thinkingConfig'] = ['thinkingLevel' => strtolower($this->thinkingLevel)];
         }
 
-        $response = Http::postJson(
-            sprintf(self::ENDPOINT, rawurlencode($this->model)),
-            $payload,
-            ['x-goog-api-key' => (string) $this->apiKey],
-            30
-        );
+        // Up to 3 tries with backoff (1 s, then 2 s) when Gemini is busy or rate limited.
+        for ($try = 1; ; $try++) {
+            $response = $this->send($payload);
+            $data = json_decode($response['body'], true) ?: [];
+            if ($response['status'] === 200) {
+                break;
+            }
 
-        $data = json_decode($response['body'], true) ?: [];
-        if ($response['status'] !== 200) {
             $apiMessage = $data['error']['message'] ?? $response['error'] ?? 'no response';
-            log_message('error', "Gemini HTTP {$response['status']}: {$apiMessage}");
-            throw new RuntimeException($this->friendlyError($response['status'], (string) ($data['error']['status'] ?? ''), (string) $apiMessage));
+            log_message('error', "Gemini HTTP {$response['status']} (try {$try} of " . self::MAX_TRIES . "): {$apiMessage}");
+            $retryable = in_array($response['status'], self::RETRY_STATUSES, true);
+            if ($retryable && $try < self::MAX_TRIES) {
+                usleep((int) (1000000 * 2 ** ($try - 1) + random_int(0, 250000)));
+                continue;
+            }
+            throw new RuntimeException($retryable
+                ? 'AI is busy, try again in a minute.'
+                : $this->friendlyError($response['status'], (string) ($data['error']['status'] ?? ''), (string) $apiMessage));
         }
 
         if (!empty($data['promptFeedback']['blockReason'])) {
@@ -256,6 +269,17 @@ class GeminiService
         }
 
         return ['answer' => trim((string) $parsed['answer']), 'table' => $this->cleanTable($parsed['table'] ?? null)];
+    }
+
+    /** One generateContent request. */
+    protected function send(array $payload): array
+    {
+        return Http::postJson(
+            sprintf(self::ENDPOINT, rawurlencode($this->model)),
+            $payload,
+            ['x-goog-api-key' => (string) $this->apiKey],
+            25
+        );
     }
 
     private function friendlyError(int $status, string $apiStatus, string $message): string
