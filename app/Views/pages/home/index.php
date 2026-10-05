@@ -188,8 +188,8 @@ $navLinks = [['#features', 'Features'], ['#apis', 'APIs'], ['#how', 'How it work
         <!-- Mobile footer -->
         <div class="px-4 py-[18px] text-xs leading-[1.7] text-[#d7d9e6] md:hidden">
             <div class="font-semibold text-white">CommIT Team · BSIT 4A</div>
-            <div>[Member 1], [Member 2], [Member 3], [Member 4]</div>
-            <div class="text-[#8f94ad]">&copy; 2026 CommIT Team · [team email]</div>
+            <div>Guintu Andre Eriz, Gamboa John Peter, Kathlyn Paguinto, Laureues Cortez</div>
+            <div class="text-[#8f94ad]">&copy; 2026 CommIT Team</div>
         </div>
         <!-- Desktop footer -->
         <div class="mx-auto hidden max-w-[1440px] flex-col gap-10 px-10 pt-12 pb-8 md:flex xl:px-20">
