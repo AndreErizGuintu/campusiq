@@ -1,6 +1,6 @@
 <?php
 /**
- * "Last email delivered" status card (design-ref 05, right column).
+ * "Last email delivered" status card (right column of Email Alerts).
  * @var array|null $log
  */
 use App\Services\EmailTemplateService;
@@ -12,12 +12,12 @@ if (!$log) {
 $count = count(array_filter(array_map('trim', explode(',', $log['recipients']))));
 $state = [
     'sent' => ['Last email delivered', 'border-mail/45', 'bg-mail/[.12] text-mail', 'check', "Delivered to {$count} " . ($count === 1 ? 'recipient' : 'recipients')],
-    'demo' => ['Last email (demo mode)', 'border-[#b45309]/35', 'bg-[#b45309]/10 text-lib', 'mail', 'Logged only: add the EmailJS keys to .env to deliver'],
+    'demo' => ['Last email (demo mode)', 'border-[#b45309]/35', 'bg-[#b45309]/10 text-lib', 'mail', 'Saved to the log, not delivered'],
     'failed' => ['Last email failed', 'border-pdf/40', 'bg-pdf/10 text-pdf', 'alert', 'Not delivered: ' . ($log['error'] ?: 'unknown error')],
 ][$log['status']];
 $steps = [
-    ['Template filled with record data', true],
-    ['Handed to EmailJS', $log['status'] !== 'demo'],
+    ['Message filled in from the record', true],
+    ['Sent to the email service', $log['status'] !== 'demo'],
     [$state[4], $log['status'] === 'sent'],
 ];
 ?>

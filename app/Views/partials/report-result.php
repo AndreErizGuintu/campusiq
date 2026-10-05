@@ -1,6 +1,6 @@
 <?php
 /**
- * "Report ready" card with a live preview of the page (design-ref 06, right column).
+ * "Report ready" card with a live preview of the page (right column of PDF Reports).
  * @var array $report reports row joined with student fields
  * @var array|null $meta seconds, pages, record_count (only right after generating)
  */
@@ -27,7 +27,7 @@ $guardianLink = url('/emails', ['student' => $report['student_id'], 'template' =
             <dt class="text-faint">Pages</dt><dd><?= !empty($meta['pages']) ? (int) $meta['pages'] . ' · ' : '' ?>A4</dd>
             <dt class="text-faint">Size</dt><dd><?= e(format_bytes((int) $report['size_bytes'])) ?></dd>
             <?php if ($meta): ?>
-                <dt class="text-faint">Made in</dt><dd><?= e(number_format((float) $meta['seconds'], 1)) ?> s <?= $live ? 'by PDFShift' : '(demo: HTML, no PDFShift call)' ?></dd>
+                <dt class="text-faint">Made in</dt><dd><?= e(number_format((float) $meta['seconds'], 1)) ?> s<?= $live ? '' : ' (demo mode)' ?></dd>
                 <dt class="text-faint">Records</dt><dd><?= (int) $meta['record_count'] ?></dd>
             <?php else: ?>
                 <dt class="text-faint">Made</dt><dd><?= e(time_ago($report['created_at'])) ?></dd>

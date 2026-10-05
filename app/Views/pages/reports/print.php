@@ -159,7 +159,7 @@ $heading = $type === 'full' ? 'Student Record' : $title;
     <?php endif; ?>
 
     <?php if ($demo): ?>
-        <div class="demo-note no-print">Demo mode: this is the HTML that would be sent to PDFShift. Add PDFSHIFT_API_KEY to .env to get a real PDF. Use your browser's Print &rarr; Save as PDF for now.</div>
+        <div class="demo-note no-print">Demo mode: this is a print-ready preview of the report. Use Print &rarr; Save as PDF to keep a copy.</div>
     <?php endif; ?>
 
     <footer>

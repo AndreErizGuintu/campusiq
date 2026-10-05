@@ -1,6 +1,6 @@
 <?php
 /**
- * Server-rendered SVG bar chart: students present on the last school days (design-ref 03).
+ * Server-rendered SVG bar chart: students present on the last school days.
  * One series, so no legend: the card title names it. Each bar has a <title> tooltip,
  * and a visually hidden table carries the same numbers for screen readers.
  *

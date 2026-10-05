@@ -62,7 +62,7 @@ Drops and recreates `campusiq`, imports `database/schema.sql`, deletes generated
 ## Checks
 
 - `php tests/smoke.php`: hits every route as guest, staff, student and parent (status codes, PHP errors, role and ownership rules, 403 on private folders).
-- `php -l <file>`: also runs automatically after every edit through the hook in `.claude/settings.json`.
+- `php -l <file>`
 - `npm run build:css`
 
 ## Project layout
@@ -73,34 +73,60 @@ app/        bootstrap, routes, helpers, Core (Env, Database, Router, Request, Re
 public/     index.php (front controller), assets/css (built), assets/js (app.js, ai.js, email.js, reports.js)
 database/   schema.sql, seed.php, reset.sh
 storage/    reports/ (generated files), logs/app.log   -- blocked from the web
-docs/       emailjs-template.html, the original PROMPT.md and MCP_SETUP.md
-design-ref/ the 15 Figma screens (read only, blocked from the web)
+docs/       emailjs-template.html (paste into the EmailJS dashboard)
+design-ref/ the 15 design screens (read only, blocked from the web)
 tests/      smoke.php
 ```
 
-## Decisions made during the build
+## Design notes
 
-- The project folder is `C:\xampp\htdocs\CampusIQ_Figma_Import`. A directory junction `C:\xampp\htdocs\campusiq` points at it, so the site runs at http://localhost/campusiq as CLAUDE.md expects without moving the folder.
-- The 15 design screens were moved into `design-ref/`; `PROMPT.md` and `MCP_SETUP.md` were moved into `docs/`.
-- Playwright MCP and MySQL MCP were not loaded in the build session, so `.mcp.json` registers both for future sessions. During the build the same checks ran with Playwright (Edge) from a scratch Node script and with `mysql.exe`.
-- Two small additions to the folder tree: `app/Core/Http.php` (shared cURL wrapper for Gemini and PDFShift) and `app/Controllers/Controller.php` (base controller helpers).
-- Login accepts the ID number or the email. Parent accounts get the ID `P-<student number>` (e.g. `P-10-24031`); student accounts use the student number.
-- Sign up links an account by student number + the email the school has on file (student email for students, guardian email for parents). One student account and one parent account per student.
-- The "Forgot password?" link from the design was left out: password reset is outside the scope lock. "Remember me" keeps the session cookie for 7 days.
-- A failed CSRF check returns 403 "Your session expired" (Apache rewrites the non-standard 419 code to 500).
+### Architecture
+
+- Custom lightweight MVC in plain PHP 8, no framework and no Composer. `public/index.php` is the only entry point; the root `.htaccess` sends every request there and returns 403 for `app/`, `database/`, `storage/`, `design-ref/`, `docs/`, `resources/`, `tests/` and any dotfile.
+- `app/Core/` is the whole framework: router, request / response, view renderer, PDO database, auth, CSRF, a base model that only writes whitelisted columns, and `Http.php`, a shared cURL wrapper for Gemini and PDFShift. Controllers extend `app/Controllers/Controller.php` for shared helpers.
+- Views are plain PHP templates: three layouts (public, staff app, portal) and shared partials (sidebar, top bar, stat cards, toasts, record pills).
+- The staff dashboard's attendance chart is server-rendered SVG with a hover title per bar and a screen-reader table. "Present today" uses the latest school day with attendance (on a weekend it shows Friday and says so).
+- Under 768px the sidebar becomes a bottom tab bar. Staff tabs: Dashboard, Students, AI, Email, PDF (Home stays reachable from the logo). Portal tabs: Records, Reports, Inbox. Log out moves to the top bar.
+
+### Demo mode
+
+Each service checks its key at runtime, so the app is fully usable before any key is filled:
+
+- **Gemini empty**: answers are built from the same database rows the live model would get.
+- **EmailJS empty** (any of the three values): nothing is sent and every email is logged with status `demo`, never `sent`.
+- **PDFShift empty**: reports are saved as print-ready HTML pages with a "Print / Save as PDF" button.
+
+Filling a key switches the same code path to live, with no code changes.
+
+### API 1: AI Assistant (Gemini)
+
+- Server side only: `models/{GEMINI_MODEL}:generateContent` with the `x-goog-api-key` header and a JSON response schema (`answer` + optional `table`). Thinking depth comes from `GEMINI_THINKING_LEVEL` (default `low`, which keeps answers fast).
+- The question picks the records sent as context: a student named in it (or passed from the student page), a section (10-A / 10-B), record types from keywords, and dates ("today", "this week", "last week", "this month", "last N days"). At most 400 rows go to the model, plus pre-computed per-student totals so counts are exact. The model is told to answer only from those records.
+- Busy or rate-limited replies (429, 500, 503, 504) are retried up to 3 times with backoff (about 1 s, then 2 s) before the page says "AI is busy, try again in a minute."
+- The page shows the last 6 questions of the logged-in staff member (tables are stored as plain lines in `ai_queries.answer`).
+
+### API 2: Email Alerts (EmailJS)
+
+- The server builds the subject and message (`app/Services/EmailTemplateService.php`); the browser sends with the EmailJS SDK (`@emailjs/browser@4`), one email per recipient about 1.1 s apart (EmailJS allows 1 request per second), then POSTs the result to `/api/emails/logs`.
+- Auto emails fire when a record is created (not edited) and its trigger is on: any grade, attendance "Absent" or "Late", library "Overdue".
+- Recipients are limited to the student's own email and the guardian email on file; the log endpoint rejects anything else.
+- `email_logs.message` keeps the full text, so a failed email can be retried exactly (Retry updates the same row) and the portal inbox can show the body.
+- "Email it to guardian" on a report opens Email Alerts with the "Report ready" template. EmailJS can't attach files on the free plan, so the email tells the guardian to log in and download it.
+
+### API 3: PDF Reports (PDFShift)
+
+- `app/Views/pages/reports/print.php` is a self-contained page (inline CSS, Google Fonts) because PDFShift renders it on its own servers and can't load files from localhost. The server POSTs it to `https://api.pdfshift.io/v3/convert/pdf` with the `X-API-Key` header, `format: A4`, `use_print: true` and `sandbox` from `PDFSHIFT_SANDBOX`.
+- Every report keeps an `.html` snapshot next to the PDF in `storage/reports/` for the on-screen preview.
+- Files are only served through `/reports/{id}/download` and `/reports/{id}/preview`, which check ownership (staff: any report; student / parent: only their linked student). There is no direct file URL.
+
+### Accounts, portal and security
+
+- Login accepts the ID number or the email. Student accounts use the student number; parent accounts get `P-<student number>` (e.g. `P-10-24031`). Staff accounts come only from the seed.
+- Sign up links an account by student number + the email the school has on file (student email for students, guardian email for parents). One student account and one parent account per student. Password reset is not part of the system.
+- Passwords use `password_hash` / `password_verify`; the session id is regenerated on login. "Remember me" keeps the session for 7 days.
 - Five failed logins in a row lock the login form for 60 seconds (per session).
-- Mobile bottom tab bar for staff: Dashboard, Students, AI, Email, PDF (Students replaces Home, which stays reachable from the logo). Portal tabs: Records, Reports, Inbox. Log out is in the top bar on mobile.
-- The staff dashboard's "Present today" uses the latest school day with attendance (on a weekend it shows Friday and says so). The chart is server-rendered SVG with a hover title per bar and a screen-reader table.
-- AI Assistant uses Gemini `models/{GEMINI_MODEL}:generateContent` with the `x-goog-api-key` header and a JSON response schema (`answer` + optional `table`). The model comes only from `GEMINI_MODEL`; thinking is set with `thinkingConfig.thinkingLevel` from `GEMINI_THINKING_LEVEL` (default `low`, since Gemini 3 defaults to deeper, slower thinking). Busy or rate-limited replies (429, 500, 503, 504) are retried up to 3 times with backoff (about 1 s, then 2 s), then the page says "AI is busy, try again in a minute." The question picks the records: a student named in it (or passed from the student page), a section (10-A / 10-B), record types from keywords, and dates ("today", "this week", "last week", "this month", "last N days"). At most 400 rows go to the model, plus pre-computed per-student totals so counts are exact.
-- AI history on the page shows the last 6 questions of the logged-in staff member (tables are stored as plain lines in `ai_queries.answer`).
-- Email Alerts: the server builds the subject and message (`app/Services/EmailTemplateService.php`), the browser sends with the EmailJS SDK (`@emailjs/browser@4`), one email per recipient about 1.1 s apart (EmailJS allows 1 request per second), then POSTs the result to `/api/emails/logs`. Auto emails fire only when a record is created (not when it is edited), for: any grade, attendance "Absent", attendance "Late", library "Overdue". "Present" attendance and returned/borrowed books don't email.
-- `email_logs` has an extra `message` column (the full text), so failed emails can be retried exactly and the student/parent inbox can show the body. Retry updates the same log row.
-- Email recipients are limited to the student's own email and guardian email on file; the log endpoint rejects anything else. Without the three EmailJS keys every email is logged with status `demo`, never `sent`.
-- The seed adds 6 example email logs built with the real templates (status `demo`, one `failed` so Retry can be shown).
-- PDF Reports: `app/Views/pages/reports/print.php` is a self-contained page (inline CSS, Google Fonts) because PDFShift renders it on its own servers and can't load files from localhost. The server POSTs it to `https://api.pdfshift.io/v3/convert/pdf` with the `X-API-Key` header, `format: A4`, `use_print: true` and `sandbox` from `PDFSHIFT_SANDBOX`. Every report keeps an `.html` snapshot next to the PDF in `storage/reports/` for the on-screen preview.
-- Reports are only served through `/reports/{id}/download` and `/reports/{id}/preview`, which check ownership (staff: any; student/parent: only their linked student). In demo mode "Download" opens the print-ready page with a "Print / Save as PDF" button.
-- "Email it to guardian" opens Email Alerts with the "Report ready" template addressed to the guardian only. EmailJS can't attach files on the free plan, so the email tells them to log in and download it.
-- Portal: students and parents only ever see the student linked to their account (enforced in every portal route and in report downloads). "Download as PDF" always makes a full record of all dates. The portal sidebar has a "Reports" page (design-ref 10 shows it) listing every report made from that record, by staff or by the family.
-- Notifications are the `email_logs` rows for the linked student with status `sent` or `demo` (failed sends never reached anyone). Unread = arrived after the user's last visit to the inbox (`users.notifications_seen_at`, an extra column).
-- Final review (a fresh subagent checked the project against CLAUDE.md): no security holes found. Fixed from its report: array-shaped input (`?q[]=x`) no longer crashes pages (`Request::input()/query()` only return scalars, list fields use `Request::array()`); "Remember me" now really lasts 7 days (`session.gc_maxlifetime`); demo badges show the full "Demo mode: add KEY_NAME to .env" text on phones and also appear on the portal pages and the student page; a student's inbox only shows emails sent to the student's address (a parent's, those sent to the guardian address); students/parents can make one PDF every 20 seconds; the demo password is only in the page when `APP_ENV=local`; JSON email endpoints use the plural `/api/emails/...`.
-- Left as is on purpose: sign up proves ownership with student number + the email on file (no one-time codes, that would be a new feature); the login throttle is per session; the footer keeps the `[Member 1]`, `[team email]`, `Instructor: [name]` placeholders for the team to fill in; `APP_ENV=local` stays as requested (set it to `production` to hide error details and the demo login buttons).
+- Every POST form and fetch call carries a CSRF token. A failed check returns 403 "Your session expired" (Apache turns the non-standard 419 code into a 500).
+- `Request::input()` / `query()` only return scalars and list fields use `Request::array()`, so array-shaped input (`?q[]=x`) can't break a page.
+- Students and parents only ever see their linked student, enforced in every portal route and in report downloads. The inbox shows the `email_logs` rows sent to the user's own address (student or guardian) with status `sent` or `demo`; unread means it arrived after the last visit (`users.notifications_seen_at`).
+- Students and parents can make one PDF every 20 seconds. "Download as PDF" in the portal always covers all dates, and the portal "Reports" page lists every report made from that record, by staff or by the family.
+- `APP_ENV=local` shows error details and the demo login shortcuts; set it to `production` to hide both.

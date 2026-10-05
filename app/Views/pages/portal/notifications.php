@@ -1,6 +1,6 @@
 <?php
 /**
- * Notifications inbox from email_logs (design-ref 13). On mobile the list and the message are separate views.
+ * Notifications inbox from email_logs. On mobile the list and the message are separate views.
  * @var array $student
  * @var array $emails
  * @var array|null $selected
@@ -93,11 +93,11 @@ $preview = static fn (string $message): string => mb_strimwidth(preg_replace('/\
                     <p class="flex items-start gap-1.5 text-[11.5px] text-faint">
                         <span class="mt-px"><?= icon('bolt', 'size-3.5') ?></span>
                         <?php if ($isDemo): ?>
-                            Logged in demo mode: the school hasn't connected EmailJS yet, so this one wasn't actually emailed.
+                            Demo mode: this message is saved here, but it wasn't sent to your email.
                         <?php elseif (array_key_exists($selected['trigger_key'], EmailTemplateService::TRIGGERS)): ?>
-                            Sent automatically through EmailJS when the record was saved.
+                            Sent automatically when the record was saved.
                         <?php else: ?>
-                            Sent by school staff through EmailJS.
+                            Sent by school staff.
                         <?php endif; ?>
                     </p>
                 </article>

@@ -1,6 +1,6 @@
 <?php
 /**
- * Student detail with records table and add / edit / delete (design-ref 07, 08).
+ * Student detail with records table and add / edit / delete.
  * @var array $student
  * @var array $records
  * @var array $counts

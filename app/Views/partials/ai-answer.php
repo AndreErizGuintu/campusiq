@@ -1,6 +1,6 @@
 <?php
 /**
- * One AI answer bubble (design-ref 04). Used for history (server) and new answers (returned as html to ai.js).
+ * One AI answer bubble. Used for history (server) and new answers (returned as html to ai.js).
  * @var array $result answer, table, records_used, scope, mode, student (optional), created_at (optional)
  */
 use App\Models\Student;

@@ -115,7 +115,7 @@ class PortalController extends Controller
         return Auth::role() === 'parent';
     }
 
-    /** The four stat cards on My records (design-ref 10). */
+    /** The four stat cards on My records. */
     private function stats(int $studentId): array
     {
         $month = Database::one(

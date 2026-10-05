@@ -125,7 +125,7 @@ loginAs('staff', 'T-0012');
 foreach ($staffPages as $path) {
     check("GET {$path}", fetch($base . $path, 'staff'), [200]);
 }
-// Crafted array input must never crash a page (was a 500 before the review fixes).
+// Crafted array input must never crash a page.
 foreach (['/students?q[]=x', '/emails?template[]=x&student[]=1', '/reports?student[]=1', '/ai?student[]=1'] as $path) {
     check("GET {$path} (array input)", fetch($base . $path, 'staff'), [200]);
 }

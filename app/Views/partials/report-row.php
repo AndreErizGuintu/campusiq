@@ -1,6 +1,6 @@
 <?php
 /**
- * One row in "Recent reports" (design-ref 06).
+ * One row in "Recent reports".
  * @var array $report
  */
 use App\Models\Report;

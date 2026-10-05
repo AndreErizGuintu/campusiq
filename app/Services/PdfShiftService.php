@@ -130,14 +130,14 @@ class PdfShiftService
         log_message('error', "PDFShift HTTP {$response['status']}: " . (is_string($detail) ? $detail : json_encode($detail)));
 
         throw new RuntimeException(match (true) {
-            $response['status'] === 0 && $response['error'] === 'timeout' => 'PDFShift took too long. Try again in a moment.',
-            $response['status'] === 0 => 'Could not reach PDFShift. Check the internet connection and try again.',
-            $response['status'] === 401 => 'PDFShift rejected the API key. Check PDFSHIFT_API_KEY in .env.',
-            $response['status'] === 403 => 'The PDFShift account has no credits left. Turn on PDFSHIFT_SANDBOX=true in .env or add credits.',
-            $response['status'] === 408 => 'PDFShift timed out loading the report page. Try again.',
-            $response['status'] === 429 => 'Too many PDFs at once (PDFShift rate limit). Wait a minute and try again.',
-            $response['status'] >= 500 => 'PDFShift is having trouble right now. Try again in a moment.',
-            default => 'PDFShift couldn\'t make the PDF (error ' . $response['status'] . ').',
+            $response['status'] === 0 && $response['error'] === 'timeout' => 'Making the PDF took too long. Try again in a moment.',
+            $response['status'] === 0 => 'Could not reach the PDF service. Check the internet connection and try again.',
+            $response['status'] === 401 => 'PDF reports aren\'t set up correctly right now. Please let the school office know.',
+            $response['status'] === 403 => 'PDF reports are unavailable right now. Please let the school office know.',
+            $response['status'] === 408 => 'Making the PDF took too long. Try again.',
+            $response['status'] === 429 => 'Too many PDFs at once. Wait a minute and try again.',
+            $response['status'] >= 500 => 'The PDF service is having trouble right now. Try again in a moment.',
+            default => 'The PDF couldn\'t be made (error ' . $response['status'] . ').',
         });
     }
 

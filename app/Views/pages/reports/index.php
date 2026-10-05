@@ -1,6 +1,6 @@
 <?php
 /**
- * PDF Reports (design-ref 06).
+ * PDF Reports.
  * @var array $students
  * @var int $selected
  * @var array|null $latest
@@ -16,8 +16,8 @@ $defaultFrom = date('Y-m-d', strtotime('-60 days'));
 ?>
 <div class="flex flex-col gap-4">
     <p class="text-[13px] text-muted">
-        Pick a student and what to include. CampusIQ builds the page and PDFShift turns it into a PDF.
-        <?php if ($live && $sandbox): ?><span class="text-lib">PDFShift sandbox is on: PDFs are free but watermarked.</span><?php endif; ?>
+        Pick a student and what to include. CampusIQ turns it into a PDF you can download or send.
+        <?php if ($live && $sandbox): ?><span class="text-lib">Test mode is on: PDFs come with a watermark.</span><?php endif; ?>
     </p>
 
     <div class="flex flex-col gap-4 xl:flex-row xl:items-start xl:gap-[18px]">

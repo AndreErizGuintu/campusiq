@@ -1,5 +1,5 @@
 <?php
-/** Flash messages as toasts (bottom right), like the "Record saved" toast in design-ref 08. */
+/** Flash messages as toasts (bottom right), e.g. "Record saved". */
 $messages = array_filter([
     'success' => flash('success'),
     'error' => flash('error'),

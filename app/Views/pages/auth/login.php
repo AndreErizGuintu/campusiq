@@ -1,6 +1,6 @@
 <?php
 /**
- * Log in (design-ref 02).
+ * Log in.
  * @var string $tab
  */
 use App\Core\Env;

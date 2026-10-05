@@ -1,6 +1,6 @@
 <?php
 /**
- * Landing page (design-ref 01 desktop, 14 mobile).
+ * Landing page.
  * @var array|null $user
  */
 use App\Core\Auth;
@@ -13,7 +13,7 @@ $features = [
 ];
 $apis = [
     ['ai', 'bg-ai', 'Gemini API', 'API 1', 'Google\'s AI model. Powers the AI Assistant page: plain-language questions and record summaries.', 'ai.google.dev'],
-    ['mail', 'bg-mail', 'EmailJS API', 'API 2', 'Sends emails straight from the browser, no mail server. Powers the Email Alerts page.', 'emailjs.com'],
+    ['mail', 'bg-mail', 'EmailJS API', 'API 2', 'Sends grade, attendance and library alerts to students and parents. Powers the Email Alerts page.', 'emailjs.com'],
     ['pdf', 'bg-pdf', 'PDFShift API', 'API 3', 'Converts a record page into a PDF file. Powers the PDF Reports page.', 'pdfshift.io'],
 ];
 $steps = [
@@ -185,7 +185,7 @@ $navLinks = [['#features', 'Features'], ['#apis', 'APIs'], ['#how', 'How it work
     </main>
 
     <footer id="team" class="mt-auto bg-side text-white">
-        <!-- Mobile footer (design-ref 14) -->
+        <!-- Mobile footer -->
         <div class="px-4 py-[18px] text-xs leading-[1.7] text-[#d7d9e6] md:hidden">
             <div class="font-semibold text-white">CommIT Team · BSIT 4A</div>
             <div>[Member 1], [Member 2], [Member 3], [Member 4]</div>

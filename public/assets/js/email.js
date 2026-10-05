@@ -35,7 +35,7 @@
         continue;
       }
       try {
-        if (!initSdk()) throw new Error('The EmailJS script did not load. Check the internet connection.');
+        if (!initSdk()) throw new Error('The email service did not load. Check the internet connection.');
         await window.emailjs.send(ej.serviceId, ej.templateId, {
           to_email: to.email,
           to_name: to.name,
@@ -48,7 +48,7 @@
         results.push({ email: to.email, ok: true });
         onStep(to, 'ok');
       } catch (error) {
-        const message = (error && (error.text || error.message)) || 'EmailJS error';
+        const message = (error && (error.text || error.message)) || 'Sending failed';
         results.push({ email: to.email, ok: false, error: message });
         onStep(to, 'fail', message);
       }
@@ -86,7 +86,7 @@
     return '<span class="flex size-[18px] shrink-0 items-center justify-center"><span class="spin size-3.5"></span></span>';
   };
 
-  /** The white delivery card from design-ref 08, updated live as each recipient is sent. */
+  /** The white delivery card, updated live as each recipient is sent. */
   function deliveryCard(email, { auto = false } = {}) {
     const el = document.createElement('div');
     el.setAttribute('role', 'status');
@@ -102,12 +102,12 @@
         <button type="button" data-toast-close class="text-faint hover:text-ink" aria-label="Dismiss">${icon('close')}</button>
       </div>
       <ol class="flex flex-col gap-2 rounded-lg bg-[#f7f8fb] px-3 py-2.5 text-[12.5px] text-body">
-        <li class="flex items-center gap-2.5">${dot('done')}<span>${auto ? 'Saved to the database' : 'Template filled with record data'}</span></li>
-        <li class="flex items-center gap-2.5" data-step-handoff>${dot(ej.demo ? 'skip' : 'done')}<span>${ej.demo ? 'Demo mode: EmailJS skipped (no keys in .env)' : 'Email handed to EmailJS'}</span></li>
+        <li class="flex items-center gap-2.5">${dot('done')}<span>${auto ? 'Record saved' : 'Message filled in from the record'}</span></li>
+        <li class="flex items-center gap-2.5" data-step-handoff>${dot(ej.demo ? 'skip' : 'done')}<span>${ej.demo ? 'Demo mode: not actually sent' : 'Sent to the email service'}</span></li>
         ${email.recipients.map((r, i) => `<li class="flex items-center gap-2.5" data-step="${i}">${dot('wait')}<span class="min-w-0 wrap-anywhere">Sending to ${escapeHtml(r.email)}</span></li>`).join('')}
       </ol>
       <div class="flex items-center justify-between gap-3">
-        <div class="text-[11.5px] text-faint" data-card-foot>${auto ? 'No one had to press send' : 'Sent from your browser'}</div>
+        <div class="text-[11.5px] text-faint" data-card-foot>${auto ? 'Sent automatically' : 'Sending now'}</div>
         <a href="${escapeHtml(config.baseUrl)}/emails" class="text-[12.5px] font-medium text-primary hover:underline">View in log</a>
       </div>`;
     card(el);

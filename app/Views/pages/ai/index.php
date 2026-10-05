@@ -1,6 +1,6 @@
 <?php
 /**
- * AI Assistant chat (design-ref 04).
+ * AI Assistant chat.
  * @var array $history recent ai_queries for this user, oldest first
  * @var array|null $student student passed with ?student= (from "Summarize")
  * @var int $studentCount

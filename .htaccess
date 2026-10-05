@@ -14,7 +14,7 @@ DirectoryIndex index.php
     RewriteEngine On
 
     # Private folders return 403.
-    RewriteRule ^(app|database|storage|design-ref|docs|resources|tests|node_modules|\.git|\.claude)(/|$) - [F,L]
+    RewriteRule ^(app|database|storage|design-ref|docs|resources|tests|node_modules|\.git)(/|$) - [F,L]
     RewriteRule (^|/)\. - [F,L]
 
     # Everything else goes to public/.

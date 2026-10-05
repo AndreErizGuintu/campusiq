@@ -9,7 +9,7 @@ class Report extends Model
 {
     protected static string $table = 'reports';
 
-    /** Report types with what they include by default (design-ref 06). */
+    /** Report types with what they include by default. */
     public const TYPES = [
         'full' => ['Full record', 'Everything on file', ['grades', 'attendance', 'library']],
         'grade_slip' => ['Grade slip', 'Grades only', ['grades']],

@@ -1,6 +1,6 @@
 <?php
 /**
- * My records for students and parents (design-ref 10). "Download as PDF" opens design-refs 11 and 12.
+ * My records for students and parents. "Download as PDF" opens the generating / ready dialog.
  * @var array $student
  * @var array $records
  * @var array $counts

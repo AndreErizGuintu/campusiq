@@ -1,5 +1,5 @@
 <?php
-/** Links to the three API pages (design-ref 03 desktop, 15 mobile). */
+/** Links to the three API pages. */
 $links = [
     ['/ai', 'ai', 'bg-primary/10 text-primary', 'AI Assistant', 'API 1', 'Ask about records · Gemini'],
     ['/emails', 'mail', 'bg-mail/10 text-mail', 'Email Alerts', 'API 2', 'Notify students & parents · EmailJS'],

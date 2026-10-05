@@ -1,6 +1,6 @@
 <?php
 /**
- * Sign up for students and parents (design-ref 02, Sign up tab).
+ * Sign up for students and parents.
  * @var string $tab
  */
 $role = old('role', 'student');

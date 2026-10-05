@@ -1,6 +1,6 @@
 <?php
 /**
- * Staff dashboard (design-ref 03 desktop, 15 mobile).
+ * Staff dashboard.
  * @var array $user
  * @var array $summary
  * @var array $days

@@ -1,6 +1,6 @@
 <?php
 /**
- * One row in "Recent emails" (design-ref 05).
+ * One row in "Recent emails".
  * @var array $log email_logs row joined with student fields
  */
 use App\Models\EmailLog;

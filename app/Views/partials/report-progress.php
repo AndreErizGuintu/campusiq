@@ -1,14 +1,14 @@
 <?php
 /**
- * "Generating…" dialog shown while the PDF is made (design-ref 09 for staff, 11 for students).
- * reports.js drives the steps; the portal variant also switches it to the "ready" state (design-ref 12).
+ * "Generating…" dialog shown while the PDF is made (staff page and portal).
+ * reports.js drives the steps; the portal variant also switches it to the "ready" state.
  * @var string $variant 'staff' | 'portal'
  * @var bool $live PDFShift key present
  */
 $steps = [
-    ['records', $variant === 'portal' ? 'Pulling your records from the database' : 'Pulling records'],
+    ['records', $variant === 'portal' ? 'Gathering your records' : 'Gathering records'],
     ['build', $variant === 'portal' ? 'Laying them out as a report page' : 'Building the report page'],
-    ['convert', $live ? 'Sending to PDFShift, converting…' : 'Demo mode: skipping PDFShift, saving the HTML page'],
+    ['convert', $live ? 'Converting to PDF…' : 'Demo mode: saving a print-ready page'],
     ['ready', $variant === 'portal' ? 'Ready to download' : 'Download'],
 ];
 ?>
@@ -22,7 +22,7 @@ $steps = [
                 <div>
                     <h2 id="report-modal-title" class="text-[17px] font-semibold"><?= $variant === 'portal' ? 'Generating your PDF…' : 'Generating report…' ?></h2>
                     <p class="mt-1 text-[13px] leading-normal text-muted" data-report-subtitle>
-                        <?= $variant === 'portal' ? 'Your record is being turned into a PDF' . ($live ? ' by PDFShift' : '') . '. This usually takes a few seconds.' : '' ?>
+                        <?= $variant === 'portal' ? 'Your record is being turned into a PDF. This usually takes a few seconds.' : '' ?>
                     </p>
                 </div>
             </div>

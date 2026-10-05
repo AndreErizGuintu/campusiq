@@ -1,6 +1,6 @@
 <?php
 /**
- * Add / edit a record (design-ref 07 right column). Fields switch with the type (app.js);
+ * Add / edit a record (right column of the student page). Fields switch with the type (app.js);
  * without JS every field shows and the server uses the ones for the chosen type.
  * @var array $student
  * @var array|null $editing record being edited

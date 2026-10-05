@@ -1,7 +1,7 @@
 /*
  * API 3: PDF Reports. POSTs to /api/reports; the server builds the HTML, calls PDFShift (key stays server side)
- * and stores the file. This script shows the "Generating…" dialog (design-ref 09 / 11) and the result
- * (design-ref 06 card for staff, design-ref 12 dialog for students and parents).
+ * and stores the file. This script shows the "Generating…" dialog and the result
+ * (a card on the staff page, a dialog for students and parents).
  */
 (() => {
   'use strict';
@@ -114,7 +114,7 @@
       timers.forEach(clearTimeout);
       setStep('records', 'done', `Pulled ${data.report.record_count} records`);
       setStep('build', 'done');
-      setStep('convert', 'done', data.report.mode === 'live' ? 'Converted by PDFShift' : 'Saved the print-ready page (demo)');
+      setStep('convert', 'done', data.report.mode === 'live' ? 'Converted to PDF' : 'Saved the print-ready page (demo)');
       setStep('ready', 'done', 'Ready to download');
       setBar(100, 4);
       controller = null;
@@ -173,7 +173,7 @@
         document.querySelector('[data-report-empty]')?.remove();
         const week = document.querySelector('[data-report-week]');
         if (week) week.textContent = Number(week.textContent) + 1;
-        toast(data.report.mode === 'live' ? 'PDF ready' : 'Report ready (demo: print-ready HTML)');
+        toast(data.report.mode === 'live' ? 'PDF ready' : 'Report ready (demo: print-ready page)');
         document.querySelector('[data-report-result]')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       }, 600);
     });

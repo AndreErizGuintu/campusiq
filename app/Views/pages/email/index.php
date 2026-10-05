@@ -1,6 +1,6 @@
 <?php
 /**
- * Email Alerts (design-ref 05).
+ * Email Alerts.
  * @var array $students
  * @var int $selected
  * @var string $template
@@ -62,7 +62,7 @@ use App\Services\EmailTemplateService as Templates;
                 <p class="hidden rounded-lg bg-pdf/[.06] px-3 py-2.5 text-[12.5px] text-pdf" data-compose-error role="alert"></p>
 
                 <div class="flex flex-col-reverse gap-3 sm:flex-row sm:items-center sm:justify-between">
-                    <div class="text-xs text-faint">Sent from the browser through EmailJS, no mail server</div>
+                    <div class="text-xs text-faint">Goes to the student and guardian emails on file</div>
                     <button type="submit" class="btn btn-mail h-[42px] px-5" data-send-button disabled><?= icon('send', 'size-4', 1.7) ?>Send email</button>
                 </div>
             </form>

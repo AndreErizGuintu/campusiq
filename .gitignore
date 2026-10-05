@@ -6,3 +6,10 @@ storage/logs/*
 !storage/logs/.gitkeep
 .claude/settings.local.json
 .playwright-mcp/
+
+# Local AI tooling and build notes (kept on disk, not in the repo)
+CLAUDE.md
+.claude/
+.mcp.json
+docs/PROMPT.md
+docs/MCP_SETUP.md

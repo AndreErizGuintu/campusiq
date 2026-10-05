@@ -1,6 +1,6 @@
 <?php
 /**
- * Left indigo panel on the login / sign up screens (design-ref 02). Collapses to a slim header on mobile.
+ * Left indigo panel on the login / sign up screens. Collapses to a slim header on mobile.
  * @var string $tab 'login' | 'signup'
  */
 ?>
